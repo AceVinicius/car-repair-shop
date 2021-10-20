@@ -50,7 +50,7 @@ public class Address {
         this.neighborhood = neighborhood;
     }
 
-    public City getCitygetCity() {
+    public City getCity() {
         return city;
     }
 
