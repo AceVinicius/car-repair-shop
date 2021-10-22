@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class Catalog {
 
@@ -8,7 +9,7 @@ public class Catalog {
      * Class Properties *
      ********************/
 
-    private HashSet<Category> categories;
+    private Set<Category> categories;
 
     /**********************
      * Class Constructors *

@@ -2,6 +2,7 @@ package Model;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 public class ServiceOrder {
 
@@ -19,7 +20,7 @@ public class ServiceOrder {
     private String description;
     private IEmployee consultant;
 
-    private HashSet<ItemSO> items;
+    private Set<ItemSO> items;
 
     /**********************
      * Class Constructors *

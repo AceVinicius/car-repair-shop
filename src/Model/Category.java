@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class Category {
 
@@ -10,7 +11,7 @@ public class Category {
 
     private final String name;
 
-    private HashSet<IItem> items;
+    private Set<IItem> items;
 
     /**********************
      * Class Constructors *

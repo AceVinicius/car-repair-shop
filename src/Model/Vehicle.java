@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.HashSet;
+import java.util.Set;
 
 public class Vehicle implements IVehicle {
 
@@ -16,7 +17,7 @@ public class Vehicle implements IVehicle {
     private String plate;
     private IClient owner;
 
-    private HashSet<ServiceOrder> services;
+    private Set<ServiceOrder> services;
 
     /**********************
      * Class Constructors *
