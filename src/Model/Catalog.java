@@ -16,7 +16,7 @@ public class Catalog {
      **********************/
 
     public Catalog() {
-        this.categories = new HashSet<Category>();
+        this.categories = new HashSet<>();
     }
 
     /*****************************

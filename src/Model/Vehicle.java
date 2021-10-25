@@ -23,20 +23,19 @@ public class Vehicle implements IVehicle {
      * Class Constructors *
      **********************/
 
-    public Vehicle(final IClient owner, final Model model, final String chassis, final int year,
-            final String color) {
+    public Vehicle(final IClient owner, final Model model, final String chassis, final int year, final String color) {
         this(owner, model, chassis, year, color, null);
     }
 
-    public Vehicle(final IClient owner, final Model model, final String chassis, final int year,
-            final String color, final String plate) {
+    public Vehicle(final IClient owner, final Model model, final String chassis, final int year, final String color,
+            final String plate) {
         this.owner = owner;
         this.model = model;
         this.chassis = chassis;
         this.year = year;
         this.color = color;
         this.plate = plate;
-        this.services = new HashSet<ServiceOrder>();
+        this.services = new HashSet<>();
     }
 
     /***********************
@@ -88,7 +87,7 @@ public class Vehicle implements IVehicle {
     /*****************************
      * Additional Public Methods *
      *****************************/
-    
+
     /**
      * Add a service to set of services
      * 

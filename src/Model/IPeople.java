@@ -6,7 +6,7 @@ public interface IPeople {
     public String getName();
 
     public long getTelephone();
-    
+
     public String getEmail();
 
     public Address getAddress();
