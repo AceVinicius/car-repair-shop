@@ -13,11 +13,13 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-public abstract class CrdView extends View {
+public abstract class CrdPanel extends JPanel {
 
     /********************
      * Class Properties *
      ********************/
+
+    private static final long serialVersionUID = 4828543939584285181L;
 
     private JTable table;
     private JPanel panel;
@@ -40,9 +42,7 @@ public abstract class CrdView extends View {
      * Class Constructors *
      **********************/
 
-    public CrdView(final String title) {
-        super(title);
-
+    public CrdPanel() {
         /*
          * Create JTable
          */
@@ -52,7 +52,7 @@ public abstract class CrdView extends View {
 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(10, 13, 464, 233);
-        getContentPane().add(scrollPane);
+        this.add(scrollPane);
         table = new JTable(this.model);
         table.addMouseListener(new MouseAdapter() {
             @Override
@@ -86,9 +86,10 @@ public abstract class CrdView extends View {
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (deleteAction(selectedRow)) {
-                    showMessageDialog(JOptionPane.INFORMATION_MESSAGE, "Record deleted successfuly!");
+                    JOptionPane.showMessageDialog(panel, "Record deleted successfuly!", "Information",
+                            JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    showMessageDialog(JOptionPane.ERROR_MESSAGE, "Error deleting record!");
+                    JOptionPane.showMessageDialog(panel, "Error deleting record!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 table.setModel(getTableModel());
                 cleanForm();
@@ -97,18 +98,17 @@ public abstract class CrdView extends View {
             }
         });
 
-        getContentPane().setLayout(null);
-        getContentPane().add(btnDelete);
-        getContentPane().add(btnCreate);
+        this.setLayout(null);
+        this.add(btnDelete);
+        this.add(btnCreate);
 
         /*
          * Create Form JPanel
          */
-
         panel = new JPanel();
+        this.add(panel);
         panel.setLayout(null);
         panel.setBorder(new TitledBorder(null, "Form", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        getContentPane().add(panel);
 
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(new ActionListener() {
@@ -125,9 +125,12 @@ public abstract class CrdView extends View {
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (createAction()) {
-                    showMessageDialog(JOptionPane.INFORMATION_MESSAGE, "Record created successfully.");
+                    JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information",
+                            JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    showMessageDialog(JOptionPane.ERROR_MESSAGE, "Record already exists.");
+                    JOptionPane.showMessageDialog(panel, "Please, fill all the gaps with '*'.", "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
                 table.setModel(getTableModel());
                 cleanForm();

@@ -13,14 +13,15 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-public abstract class CrudView extends View {
-
+public abstract class CrudPanel extends JPanel {
     /********************
      * Class Properties *
      ********************/
 
+    private static final long serialVersionUID = -161529371203750009L;
+
     private JTable table;
-    private JPanel panel;
+    private JPanel form;
     private JButton btnUpdate;
     private JButton btnCreate;
     private JButton btnDelete;
@@ -41,9 +42,7 @@ public abstract class CrudView extends View {
      * Class Constructors *
      **********************/
 
-    public CrudView(final String title) {
-        super(title);
-
+    public CrudPanel() {
         /*
          * Create JTable
          */
@@ -53,7 +52,7 @@ public abstract class CrudView extends View {
 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(10, 13, 464, 233);
-        getContentPane().add(scrollPane);
+        this.add(scrollPane);
         table = new JTable(this.model);
         table.addMouseListener(new MouseAdapter() {
             @Override
@@ -97,9 +96,10 @@ public abstract class CrudView extends View {
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (deleteAction(selectedRow)) {
-                    showMessageDialog(JOptionPane.INFORMATION_MESSAGE, "Record deleted successfuly!");
+                    JOptionPane.showMessageDialog(form, "Record deleted successfuly!", "Information",
+                            JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    showMessageDialog(JOptionPane.ERROR_MESSAGE, "Error deleting record!");
+                    JOptionPane.showMessageDialog(form, "Error deleting record!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 table.setModel(getTableModel());
                 cleanForm();
@@ -108,50 +108,46 @@ public abstract class CrudView extends View {
             }
         });
 
-        getContentPane().setLayout(null);
-        getContentPane().add(btnDelete);
-        getContentPane().add(btnCreate);
-        getContentPane().add(btnUpdate);
+        this.setLayout(null);
+        this.add(btnDelete);
+        this.add(btnCreate);
+        this.add(btnUpdate);
 
         /*
          * Create Form JPanel
          */
 
-        panel = new JPanel();
-        panel.setLayout(null);
-        panel.setBorder(new TitledBorder(null, "Form", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        getContentPane().add(panel);
-
-        btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cleanForm();
-                mode = K_DEFAULT;
-                formMode(mode);
-            }
-        });
-        btnCancel.setEnabled(false);
-        panel.add(btnCancel);
+        form = new JPanel();
+        form.setLayout(null);
+        form.setBorder(new TitledBorder(null, "Form", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        this.add(form);
 
         btnSave = new JButton("Save");
+        form.add(btnSave);
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 switch (mode) {
                 case K_CREATE:
 
                     if (createAction()) {
-                        showMessageDialog(JOptionPane.INFORMATION_MESSAGE, "Record created successfully.");
+                        JOptionPane.showMessageDialog(form, "Record created successfully.", "Information",
+                                JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        showMessageDialog(JOptionPane.ERROR_MESSAGE, "Record already exists.");
+                        JOptionPane.showMessageDialog(form, "Please, fill all the gaps with '*'.", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
 
                     break;
 
                 case K_UPDATE:
                     if (updateAction(selectedRow)) {
-                        showMessageDialog(JOptionPane.INFORMATION_MESSAGE, "Record updated successfully.");
+                        JOptionPane.showMessageDialog(form, "Record updated successfully.", "Information",
+                                JOptionPane.INFORMATION_MESSAGE);
                     } else {
-                        showMessageDialog(JOptionPane.ERROR_MESSAGE, "Record does not exist.");
+                        JOptionPane.showMessageDialog(form, "Record does not exist.", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
                     }
 
                     break;
@@ -163,9 +159,19 @@ public abstract class CrudView extends View {
             }
         });
         btnSave.setEnabled(false);
-        panel.add(btnSave);
 
-        form(panel, btnCancel, btnSave);
+        btnCancel = new JButton("Cancel");
+        form.add(btnCancel);
+        btnCancel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cleanForm();
+                mode = K_DEFAULT;
+                formMode(mode);
+            }
+        });
+        btnCancel.setEnabled(false);
+
+        form(form, btnCancel, btnSave);
 
         formMode(mode);
         setVisible(true);

@@ -1,12 +1,13 @@
 package View;
 
-import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
 public class View {
@@ -21,12 +22,11 @@ public class View {
      * Class Constructors *
      **********************/
 
-    public View(final String title) {
-        frame = new JFrame(title);
+    public View() {
+        frame = new JFrame("Car Repair Shop");
         frame.setResizable(false);
-        frame.setBounds(100, 100, 500, 450);
+        frame.setBounds(100, 100, 500, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
 
         /*
          * Create JMenuBar
@@ -37,49 +37,60 @@ public class View {
         JMenu mnNew = new JMenu("New");
         menuBar.add(mnNew);
 
+        JMenuItem mntmNewClient = new JMenuItem("Client");
+        mntmNewClient.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setTitle("Client Editor");
+                frame.setBounds(100, 100, 500, 655);
+                switchPanes(new ClientView());
+            }
+        });
+
+        JMenuItem mntmNewMenuItem = new JMenuItem("Employee");
+        mntmNewMenuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setTitle("Employee Editor");
+                frame.setBounds(100, 100, 500, 626);
+                switchPanes(new EmployeeView());
+            }
+        });
+        mnNew.add(mntmNewMenuItem);
+        mnNew.add(mntmNewClient);
+
         JMenuItem mntmNewCity = new JMenuItem("City");
+        mntmNewCity.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setTitle("City Editor");
+                frame.setBounds(100, 100, 500, 450);
+                switchPanes(new CityView());
+            }
+        });
         mnNew.add(mntmNewCity);
 
         JSeparator separator = new JSeparator();
         mnNew.add(separator);
 
         JMenuItem mntnExit = new JMenuItem("Exit");
+        mntnExit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
         mnNew.add(mntnExit);
+
+        frame.setVisible(true);
     }
 
-    /***********************
-     * Getters and Setters *
-     ***********************/
-    protected Container getContentPane() {
-        return frame.getContentPane();
-    }
+    /******************************
+     * Additional Private Methods *
+     ******************************/
 
-    protected void setVisible(final boolean visible) {
-        frame.setVisible(visible);
-        // frame.pack();
-    }
+    private void switchPanes(JPanel newPanel) {
+        JPanel panel = (JPanel) frame.getContentPane();
 
-    /********************************
-     * Additional Protected Methods *
-     ********************************/
-    protected void showMessageDialog(final int type, final String message) {
-        switch (type) {
-        case JOptionPane.INFORMATION_MESSAGE:
-            JOptionPane.showMessageDialog(frame, message, "Information", JOptionPane.INFORMATION_MESSAGE);
-            break;
-
-        case JOptionPane.WARNING_MESSAGE:
-            JOptionPane.showMessageDialog(frame, message, "Warning", JOptionPane.WARNING_MESSAGE);
-            break;
-
-        case JOptionPane.QUESTION_MESSAGE:
-            JOptionPane.showMessageDialog(frame, message, "Question", JOptionPane.QUESTION_MESSAGE);
-            break;
-
-        case JOptionPane.ERROR_MESSAGE:
-        default:
-            JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
-            break;
-        }
+        panel.removeAll();
+        panel.add(newPanel);
+        panel.revalidate();
+        panel.repaint();
     }
 }

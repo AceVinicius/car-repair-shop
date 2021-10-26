@@ -12,24 +12,18 @@ import javax.swing.text.MaskFormatter;
 
 import Controller.CityController;
 
-public class CityView extends CrdView {
+public class CityView extends CrdPanel {
 
     /********************
      * Class Properties *
      ********************/
 
+    private static final long serialVersionUID = 4214998848217485047L;
+
     private JTextField nameField;
     private JFormattedTextField stateField;
     private String name;
     private String state;
-
-    /**********************
-     * Class Constructors *
-     **********************/
-
-    public CityView(final String title, DefaultTableModel model) {
-        super(title);
-    }
 
     /***********************
      * Getters and Setters *
@@ -53,11 +47,19 @@ public class CityView extends CrdView {
     protected void form(JPanel panel, JButton btnCancel, JButton btnSave) {
         panel.setBounds(10, 289, 464, 90);
 
+        JLabel nameLabel = new JLabel("City Name*");
+        nameLabel.setBounds(10, 26, 54, 14);
+        panel.add(nameLabel);
+
         nameField = new JTextField();
         nameField.setEnabled(false);
         nameField.setColumns(10);
         nameField.setBounds(74, 23, 233, 20);
         panel.add(nameField);
+
+        JLabel stateLabel = new JLabel("State*");
+        stateLabel.setBounds(317, 26, 26, 14);
+        panel.add(stateLabel);
 
         try {
             stateField = new JFormattedTextField(new MaskFormatter("UU"));
@@ -69,21 +71,13 @@ public class CityView extends CrdView {
         stateField.setEnabled(false);
         stateField.setColumns(10);
 
-        JLabel nameLabel = new JLabel("City Name");
-        nameLabel.setBounds(10, 26, 54, 14);
-        panel.add(nameLabel);
-
-        JLabel stateLabel = new JLabel("State");
-        stateLabel.setBounds(317, 26, 26, 14);
-        panel.add(stateLabel);
-
         btnCancel.setBounds(129, 56, 89, 23);
         btnSave.setBounds(228, 56, 89, 23);
     }
 
     @Override
     protected void selectedRowAction(final int row) {
-        Object[] newRow = CityController.retrieve(row);
+        Object[] newRow = CityController.read(row);
 
         nameField.setText(newRow[0].toString());
         stateField.setText(newRow[1].toString());
@@ -93,7 +87,7 @@ public class CityView extends CrdView {
     protected boolean createAction() {
         getForm();
 
-        if (name.equals("") && state.equals("")) {
+        if (name.length() <= 0 || state.length() <= 0) {
             return false;
         }
 
@@ -121,7 +115,7 @@ public class CityView extends CrdView {
 
     @Override
     protected void cleanForm() {
-        nameField.setText(null);
-        stateField.setText(null);
+        nameField.setText("");
+        stateField.setText("");
     }
 }

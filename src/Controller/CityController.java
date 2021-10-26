@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 import Model.City;
-import View.CityView;
 
 public class CityController {
 
@@ -13,15 +12,11 @@ public class CityController {
      * Class Properties *
      ********************/
 
-    public static ArrayList<City> cities = new ArrayList<City>();
+    private static ArrayList<City> cities = new ArrayList<City>();
 
     /**********************
      * Class Constructors *
      **********************/
-
-    public CityController() {
-        new CityView("City Editor", getTableModel());
-    }
 
     public static boolean create(final String name, final String state) {
         City newCity = new City(name, state);
@@ -30,12 +25,29 @@ public class CityController {
         return true;
     }
 
-    public static Object[] retrieve(final int index) {
+    public static Object[] read(final int index) {
         City city = cities.get(index);
 
         Object[] row = { city.getName(), city.getState() };
 
         return row;
+    }
+
+    public static City getCity(final int index) {
+        return cities.get(index);
+    }
+
+    public static ArrayList<City> getAll() {
+        return cities;
+    }
+
+    public static boolean delete(final int index) {
+        if (read(index) == null) {
+            return false;
+        }
+
+        cities.remove(index);
+        return true;
     }
 
     public static DefaultTableModel getTableModel() {
@@ -48,14 +60,5 @@ public class CityController {
         }
 
         return model;
-    }
-
-    public static boolean delete(final int index) {
-        if (retrieve(index) == null) {
-            return false;
-        }
-
-        cities.remove(index);
-        return true;
     }
 }
