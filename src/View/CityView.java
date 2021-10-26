@@ -5,7 +5,6 @@ import java.text.ParseException;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -106,12 +105,12 @@ public class CityView extends CrdView {
     }
 
     @Override
-    protected void deleteAction(final int row) {
-        if (CityController.delete(row)) {
-            showMessageDialog(JOptionPane.INFORMATION_MESSAGE, "City deleted successfully!");
-        } else {
-            showMessageDialog(JOptionPane.ERROR_MESSAGE, "Error while deleting city!");
+    protected boolean deleteAction(final int row) {
+        if (!CityController.delete(row)) {
+            return false;
         }
+
+        return true;
     }
 
     @Override

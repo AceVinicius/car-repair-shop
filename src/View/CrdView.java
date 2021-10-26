@@ -85,7 +85,11 @@ public abstract class CrdView extends View {
         btnDelete.setBounds(10, 255, 97, 23);
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                deleteAction(selectedRow);
+                if (deleteAction(selectedRow)) {
+                    showMessageDialog(JOptionPane.INFORMATION_MESSAGE, "Record deleted successfuly!");
+                } else {
+                    showMessageDialog(JOptionPane.ERROR_MESSAGE, "Error deleting record!");
+                }
                 table.setModel(getTableModel());
                 cleanForm();
                 mode = K_DEFAULT;
@@ -121,9 +125,9 @@ public abstract class CrdView extends View {
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (createAction()) {
-                    showMessageDialog(JOptionPane.INFORMATION_MESSAGE, "Object created successfully.");
+                    showMessageDialog(JOptionPane.INFORMATION_MESSAGE, "Record created successfully.");
                 } else {
-                    showMessageDialog(JOptionPane.ERROR_MESSAGE, "Object already exists.");
+                    showMessageDialog(JOptionPane.ERROR_MESSAGE, "Record already exists.");
                 }
                 table.setModel(getTableModel());
                 cleanForm();
@@ -208,7 +212,7 @@ public abstract class CrdView extends View {
 
     protected abstract boolean createAction();
 
-    protected abstract void deleteAction(final int row);
+    protected abstract boolean deleteAction(final int row);
 
     protected abstract void enableForm(final boolean enabled);
 
