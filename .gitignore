@@ -1,2 +1,9 @@
+# VS Code config folder
 /.vscode
+
+# Compiled classes folder
 /bin
+
+# Eclipse Files
+.classpath
+.project

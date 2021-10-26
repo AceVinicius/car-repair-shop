@@ -32,7 +32,7 @@ public class ServiceOrder {
         this.kmAtual = kmAtual;
         this.date = new Date();
         this.client = vehicle.getOwner();
-        this.items = new HashSet<ItemSO>();
+        this.items = new HashSet<>();
     }
 
     /***********************
@@ -114,7 +114,7 @@ public class ServiceOrder {
     public void removeItem(ItemSO item) {
         items.remove(item);
     }
-    
+
     /**
      * Get total value from SERVICE only
      * 
@@ -164,28 +164,26 @@ public class ServiceOrder {
         return total;
     }
 
-    
-
     public StringBuilder listServiceOrder() {
         StringBuilder sb = new StringBuilder();
-        
+
         sb.append("-----( Ordem de serviço " + this.getNumber() + " )-----\n\n");
         sb.append("Data:          " + this.getDate() + "\n");
         sb.append("KmAtual: " + this.getKmAtual() + "\n");
         sb.append("Descrição:     " + this.getDescription() + "\n");
-        
+
         sb.append("\n-----( Consultor )-----\n");
         sb.append(this.getConsultant() + "\n");
-        
+
         sb.append("\n-----( Cliente )-----\n");
         sb.append(this.getClient() + "\n");
-        
+
         sb.append("\n-----( Veículo )-----\n");
         sb.append(this.getVehicle() + "\n");
-        
+
         sb.append("\n-----( Itens )-----\n");
         sb.append(this.getItems());
-        
+
         return sb;
     }
 
@@ -195,31 +193,31 @@ public class ServiceOrder {
 
     private StringBuilder getItems() {
         StringBuilder sb = new StringBuilder();
-    
+
         double totalCarrinho = 0;
         double desconto = 0;
-    
+
         for (ItemSO item : items) {
             int qtd = item.getQtd();
             double price = item.getPrice();
             double total = item.getTotalItem();
             IItem i = item.getItem();
-    
+
             totalCarrinho += total;
-    
+
             if (client.isPlatinum() && i.getType() == EItemType.SERVICE) {
                 desconto += total;
             }
-    
+
             sb.append("[" + i.getBarCode() + "] - [" + i.getDescription() + "] - [" + i.getType() + "]\n");
             sb.append(price + " x " + qtd + " = " + total + "\n");
             sb.append("-------------------\n");
         }
-    
+
         sb.append("\nTotal:             " + totalCarrinho + "\n");
         sb.append("Desconto Platinum: " + desconto + "\n\n");
         sb.append("Total Carrinho:    " + (totalCarrinho - desconto));
-    
+
         return sb;
     }
 }

@@ -19,7 +19,7 @@ public class Category {
 
     public Category(final String name) {
         this.name = name;
-        this.items = new HashSet<IItem>();
+        this.items = new HashSet<>();
     }
 
     /***********************

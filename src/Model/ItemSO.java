@@ -50,8 +50,7 @@ public class ItemSO {
      *****************************/
 
     /**
-     * Get the price of the item multiplied by the quantity
-     * of items.
+     * Get the price of the item multiplied by the quantity of items.
      * 
      * @return
      */
@@ -64,7 +63,8 @@ public class ItemSO {
      * 
      * @return
      */
-    public String listItem() {
-        return item.toString();
+    @Override
+    public String toString() {
+        return String.format("%s - %d - %.2f", getItem().getDescription(), getQtd(), getTotalItem());
     }
 }
