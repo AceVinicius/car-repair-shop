@@ -7,7 +7,7 @@ public class Address {
      ********************/
 
     private String street;
-    private int number;
+    private String number;
     private String neighborhood;
     private City city;
 
@@ -15,7 +15,7 @@ public class Address {
      * Class Constructors *
      **********************/
 
-    public Address(final String street, final int number, final String neighborhood, final City city) {
+    public Address(final String street, final String number, final String neighborhood, final City city) {
         this.street = street;
         this.number = number;
         this.neighborhood = neighborhood;
@@ -34,15 +34,15 @@ public class Address {
         this.street = street;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(final int number) {
+    public void setNumber(final String number) {
         this.number = number;
     }
 
-    public String getNeighborheed() {
+    public String getNeighborhood() {
         return neighborhood;
     }
 

@@ -1,6 +1,5 @@
 package Model;
 
-// import java.lang.StringBuilder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,10 +9,10 @@ public class People implements IPeople {
      * Class Properties *
      ********************/
 
-    private final long cpf;
+    private final String cpf;
 
     private String name;
-    private long telephone;
+    private String telephone;
     private String email;
     private Address address;
 
@@ -21,7 +20,7 @@ public class People implements IPeople {
      * Class Constructors *
      **********************/
 
-    public People(final long cpf, final String name, final long telephone, final Address address) {
+    public People(final String cpf, final String name, final String telephone, final Address address) {
         this.cpf = cpf;
         this.name = name;
         this.telephone = telephone;
@@ -33,7 +32,7 @@ public class People implements IPeople {
      ***********************/
 
     @Override
-    public long getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
@@ -47,11 +46,11 @@ public class People implements IPeople {
     }
 
     @Override
-    public long getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(final long telephone) {
+    public void setTelephone(final String telephone) {
         this.telephone = telephone;
     }
 

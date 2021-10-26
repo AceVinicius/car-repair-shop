@@ -12,7 +12,7 @@ public class Client extends People implements IClient {
      * Class Constructors *
      **********************/
 
-    public Client(final long cpf, final String name, final long telephone, final Address address) {
+    public Client(final String cpf, final String name, final String telephone, final Address address) {
         super(cpf, name, telephone, address);
         this.platinum = false;
     }

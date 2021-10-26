@@ -14,7 +14,7 @@ public class Employee extends People implements IEmployee {
      * Class Constructors *
      **********************/
 
-    public Employee(final long cpf, final String name, final long telephone, final Address address) {
+    public Employee(final String cpf, final String name, final String telephone, final Address address) {
         super(cpf, name, telephone, address);
         this.registration = registrationCounter++;
     }

@@ -1,11 +1,11 @@
 package Model;
 
 public interface IPeople {
-    public long getCpf();
+    public String getCpf();
 
     public String getName();
 
-    public long getTelephone();
+    public String getTelephone();
 
     public String getEmail();
 
