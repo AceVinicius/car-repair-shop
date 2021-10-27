@@ -85,12 +85,12 @@ public abstract class CrdPanel extends JPanel {
         btnDelete.setBounds(10, 255, 97, 23);
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (deleteAction(selectedRow)) {
-                    JOptionPane.showMessageDialog(panel, "Record deleted successfuly!", "Information",
-                            JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Error deleting record!", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+            	try {
+            		deleteAction(selectedRow);
+            		JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information", JOptionPane.INFORMATION_MESSAGE);             		
+            	} catch(CrudException ex) {
+            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            	}
                 table.setModel(getTableModel());
                 cleanForm();
                 mode = K_DEFAULT;
@@ -124,14 +124,16 @@ public abstract class CrdPanel extends JPanel {
         btnSave = new JButton("Save");
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (createAction()) {
-                    JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information",
-                            JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(panel, "Please, fill all the gaps with '*'.", "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
+            	try {
+            		createAction();
+            		JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information", JOptionPane.INFORMATION_MESSAGE);
+            	} catch(InvalidFormException ex) {
+            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
+            		return;
+            	} catch(CrudException ex) {
+            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            		return;
+            	}
                 table.setModel(getTableModel());
                 cleanForm();
                 mode = K_DEFAULT;
@@ -213,9 +215,9 @@ public abstract class CrdPanel extends JPanel {
 
     protected abstract void selectedRowAction(final int row);
 
-    protected abstract boolean createAction();
+    protected abstract void createAction() throws InvalidFormException, CrudException;
 
-    protected abstract boolean deleteAction(final int row);
+    protected abstract void deleteAction(final int row) throws CrudException;
 
     protected abstract void enableForm(final boolean enabled);
 

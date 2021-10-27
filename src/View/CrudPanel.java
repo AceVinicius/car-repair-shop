@@ -21,7 +21,7 @@ public abstract class CrudPanel extends JPanel {
     private static final long serialVersionUID = -161529371203750009L;
 
     private JTable table;
-    private JPanel form;
+    private JPanel panel;
     private JButton btnUpdate;
     private JButton btnCreate;
     private JButton btnDelete;
@@ -95,12 +95,12 @@ public abstract class CrudPanel extends JPanel {
         btnDelete.setBounds(10, 255, 97, 23);
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (deleteAction(selectedRow)) {
-                    JOptionPane.showMessageDialog(form, "Record deleted successfuly!", "Information",
-                            JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(form, "Error deleting record!", "Error", JOptionPane.ERROR_MESSAGE);
-                }
+            	try {
+            		deleteAction(selectedRow);
+            		JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information", JOptionPane.INFORMATION_MESSAGE);             		
+            	} catch(CrudException ex) {
+            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            	}
                 table.setModel(getTableModel());
                 cleanForm();
                 mode = K_DEFAULT;
@@ -117,51 +117,54 @@ public abstract class CrudPanel extends JPanel {
          * Create Form JPanel
          */
 
-        form = new JPanel();
-        form.setLayout(null);
-        form.setBorder(new TitledBorder(null, "Form", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-        this.add(form);
+        panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBorder(new TitledBorder(null, "Form", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        this.add(panel);
 
-        btnSave = new JButton("Save");
-        form.add(btnSave);
-        btnSave.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                switch (mode) {
-                case K_CREATE:
-
-                    if (createAction()) {
-                        JOptionPane.showMessageDialog(form, "Record created successfully.", "Information",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(form, "Please, fill all the gaps with '*'.", "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    break;
-
-                case K_UPDATE:
-                    if (updateAction(selectedRow)) {
-                        JOptionPane.showMessageDialog(form, "Record updated successfully.", "Information",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    } else {
-                        JOptionPane.showMessageDialog(form, "Record does not exist.", "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-
-                    break;
-                }
-                table.setModel(getTableModel());
-                cleanForm();
-                mode = K_DEFAULT;
-                formMode(mode);
-            }
-        });
-        btnSave.setEnabled(false);
-
+	    btnSave = new JButton("Save");
+	    panel.add(btnSave);
+	    btnSave.addActionListener(new ActionListener() {
+	        public void actionPerformed(ActionEvent e) {
+	            switch (mode) {
+	            case K_CREATE:
+	            	try {
+	            		createAction();
+	            		JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information", JOptionPane.INFORMATION_MESSAGE);
+	            	} catch(InvalidFormException ex) {
+	            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+	            		return;
+	            	} catch(CrudException ex) {
+	            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	            		return;
+	            	}
+	
+	                break;
+	
+	            case K_UPDATE:
+	            	try {
+	            		updateAction(selectedRow);
+	            		JOptionPane.showMessageDialog(panel, "Record Updated successfully.", "Information", JOptionPane.INFORMATION_MESSAGE);
+	            	} catch(InvalidFormException ex) {
+	            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+	            		return;
+	            	} catch(CrudException ex) {
+	            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+	            		return;
+	            	}
+	
+	                break;
+	            }
+	            table.setModel(getTableModel());
+	            cleanForm();
+	            mode = K_DEFAULT;
+	            formMode(mode);
+	        }
+	    });
+	    btnSave.setEnabled(false);
+                
         btnCancel = new JButton("Cancel");
-        form.add(btnCancel);
+        panel.add(btnCancel);
         btnCancel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cleanForm();
@@ -171,7 +174,7 @@ public abstract class CrudPanel extends JPanel {
         });
         btnCancel.setEnabled(false);
 
-        form(form, btnCancel, btnSave);
+        form(panel, btnCancel, btnSave);
 
         formMode(mode);
         setVisible(true);
@@ -198,7 +201,7 @@ public abstract class CrudPanel extends JPanel {
 
             btnCancel.setEnabled(true);
             btnSave.setEnabled(true);
-            enableForm(true);
+            enableForm(true, false);
 
             break;
 
@@ -209,7 +212,7 @@ public abstract class CrudPanel extends JPanel {
 
             btnCancel.setEnabled(true);
             btnSave.setEnabled(true);
-            enableForm(true);
+            enableForm(true, true);
 
             break;
 
@@ -220,7 +223,7 @@ public abstract class CrudPanel extends JPanel {
 
             btnCancel.setEnabled(true);
             btnSave.setEnabled(true);
-            enableForm(true);
+            enableForm(true, false);
 
             break;
 
@@ -231,7 +234,7 @@ public abstract class CrudPanel extends JPanel {
 
             btnCancel.setEnabled(false);
             btnSave.setEnabled(false);
-            enableForm(false);
+            enableForm(false, false);
 
             break;
 
@@ -242,7 +245,7 @@ public abstract class CrudPanel extends JPanel {
 
             btnCancel.setEnabled(false);
             btnSave.setEnabled(false);
-            enableForm(false);
+            enableForm(false, false);
 
             break;
         }
@@ -258,13 +261,13 @@ public abstract class CrudPanel extends JPanel {
 
     protected abstract void selectedRowAction(final int row);
 
-    protected abstract boolean createAction();
+    protected abstract void createAction() throws InvalidFormException, CrudException;
 
-    protected abstract boolean updateAction(final int row);
+    protected abstract void updateAction(final int row) throws InvalidFormException, CrudException;
 
-    protected abstract boolean deleteAction(final int row);
+    protected abstract void deleteAction(final int row) throws CrudException;
 
-    protected abstract void enableForm(final boolean enabled);
+    protected abstract void enableForm(final boolean enabled, final boolean mode);
 
     protected abstract void cleanForm();
 }
