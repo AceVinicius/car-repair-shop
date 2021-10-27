@@ -23,13 +23,13 @@ public class Vehicle implements IVehicle {
      * Class Constructors *
      **********************/
 
-    public Vehicle(final IClient owner, final Model model, final String chassis, final int year, final String color) {
-        this(owner, model, chassis, year, color, null);
+    public Vehicle(final Model model, final String chassis, final int year, final String color) {
+        this(model, chassis, year, color, null);
     }
 
-    public Vehicle(final IClient owner, final Model model, final String chassis, final int year, final String color,
+    public Vehicle(final Model model, final String chassis, final int year, final String color,
             final String plate) {
-        this.owner = owner;
+        this.owner = null;
         this.model = model;
         this.chassis = chassis;
         this.year = year;
