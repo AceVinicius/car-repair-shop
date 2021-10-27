@@ -29,9 +29,15 @@ public class CityView extends CrdPanel {
      * Getters and Setters *
      ***********************/
 
-    private void getForm() {
+    private boolean getForm() {
         name = nameField.getText();
         state = stateField.getText();
+        
+        if (name.length() <= 0 || state.length() <= 0) {
+            return false;
+        }
+        
+        return true;
     }
 
     /********************
@@ -84,27 +90,21 @@ public class CityView extends CrdPanel {
     }
 
     @Override
-    protected boolean createAction() {
-        getForm();
-
-        if (name.length() <= 0 || state.length() <= 0) {
-            return false;
-        }
-
+    protected void createAction() throws InvalidFormException, CrudException {
+    	if (!getForm()) {
+    		throw new InvalidFormException("Invalid Parameters.");
+    	}
+        
         if (!CityController.create(name, state)) {
-            return false;
+        	throw new CrudException("Can't create new City. Something went wrong.");
         }
-
-        return true;
     }
 
     @Override
-    protected boolean deleteAction(final int row) {
+    protected void deleteAction(final int row) throws CrudException {
         if (!CityController.delete(row)) {
-            return false;
+        	throw new CrudException("Can't delete selected City. Something went wrong.");
         }
-
-        return true;
     }
 
     @Override

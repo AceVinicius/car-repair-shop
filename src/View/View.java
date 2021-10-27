@@ -36,7 +36,7 @@ public class View {
 
         JMenu mnNew = new JMenu("New");
         menuBar.add(mnNew);
-
+        
         JMenuItem mntmNewClient = new JMenuItem("Client");
         mntmNewClient.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -45,18 +45,8 @@ public class View {
                 switchPanes(new ClientView());
             }
         });
-
-        JMenuItem mntmNewMenuItem = new JMenuItem("Employee");
-        mntmNewMenuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                frame.setTitle("Employee Editor");
-                frame.setBounds(100, 100, 500, 626);
-                switchPanes(new EmployeeView());
-            }
-        });
-        mnNew.add(mntmNewMenuItem);
         mnNew.add(mntmNewClient);
-
+                
         JMenuItem mntmNewCity = new JMenuItem("City");
         mntmNewCity.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -66,6 +56,36 @@ public class View {
             }
         });
         mnNew.add(mntmNewCity);
+        
+        JMenuItem mntmNewEmployee = new JMenuItem("Employee");
+        mntmNewEmployee.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		frame.setTitle("Employee Editor");
+        		frame.setBounds(100, 100, 500, 626);
+        		switchPanes(new EmployeeView());
+        	}
+        });
+        mnNew.add(mntmNewEmployee);
+        
+        JMenuItem mntmNewModel = new JMenuItem("Model");
+        mntmNewModel.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                frame.setTitle("Model Editor");
+                frame.setBounds(100, 100, 500, 450);
+                switchPanes(new ModelView());
+        	}
+        });
+        mnNew.add(mntmNewModel);
+
+        JMenuItem mntmNewVehicle = new JMenuItem("Vehicle");
+        mntmNewVehicle.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setTitle("Vehicle Editor");
+                frame.setBounds(100, 100, 500, 517);
+                switchPanes(new VehicleView());
+            }
+        });
+        mnNew.add(mntmNewVehicle);
 
         JSeparator separator = new JSeparator();
         mnNew.add(separator);

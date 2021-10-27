@@ -7,6 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.Address;
 import Model.City;
 import Model.Employee;
+import Model.IEmployee;
 
 public class EmployeeController {
 
@@ -14,7 +15,7 @@ public class EmployeeController {
 	 * Class Properties *
 	 ********************/
 
-	public static ArrayList<Employee> employees = new ArrayList<Employee>();
+	public static ArrayList<IEmployee> employees = new ArrayList<IEmployee>();
 
 	/**********************
 	 * Class Constructors *
@@ -31,7 +32,7 @@ public class EmployeeController {
 	}
 
 	public static Object[] read(final int index) {
-		Employee employee = employees.get(index);
+		IEmployee employee = employees.get(index);
 
 		Object[] row = { employee.getCpf(), employee.getName(), employee.getTelephone(),
 				employee.getEmail() != null ? employee.getEmail() : "", employee.getAddress().getStreet(),
@@ -43,7 +44,7 @@ public class EmployeeController {
 
 	public static boolean update(final int index, final String name, final String telephone, final String email,
 			final String street, final String number, final String neighborhood, final City city) {
-		Employee employee = employees.get(index);
+		Employee employee = (Employee) employees.get(index);
 
 		if (employee == null) {
 			return false;
@@ -61,7 +62,7 @@ public class EmployeeController {
 	}
 
 	public static boolean delete(final int index) {
-		Employee employee = employees.get(index);
+		IEmployee employee = employees.get(index);
 
 		if (employee == null) {
 			return false;
@@ -79,7 +80,7 @@ public class EmployeeController {
 		DefaultTableModel model = new DefaultTableModel(header, 0);
 
 		for (int i = 0; i < employees.size(); i++) {
-			Employee curr = employees.get(i);
+			IEmployee curr = employees.get(i);
 			model.addRow(new Object[] { curr.getCpf(), curr.getName(), curr.getTelephone(),
 					curr.getEmail() != null ? curr.getEmail() : "", curr.getAddress().getStreet(),
 					curr.getAddress().getNumber(), curr.getAddress().getNeighborhood(), curr.getAddress().getCity() });

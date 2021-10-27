@@ -49,7 +49,7 @@ public class ClientView extends CrudPanel {
      * Getters and Setters *
      ***********************/
 
-    private void getForm() {
+    private boolean getForm() {
         cpf = cpfField.getText();
         name = nameField.getText();
         telephone = telephoneField.getText();
@@ -59,6 +59,13 @@ public class ClientView extends CrudPanel {
         number = numberField.getText();
         neighborhood = neighborhoodField.getText();
         city = (City) cityBox.getSelectedItem();
+        
+        if (cpf.length() <= 0 || name.length() <= 0 || telephone.length() <= 0 || street.length() <= 0
+                || number.length() <= 0 || cityBox.getSelectedItem() == null || neighborhood.length() <= 0) {
+            return false;
+        }
+        
+        return true;
     }
 
     /********************
@@ -196,44 +203,37 @@ public class ClientView extends CrudPanel {
     }
 
     @Override
-    protected boolean createAction() {
-        getForm();
-
-        if (cpf.length() <= 0 || name.length() <= 0 || telephone.length() <= 0 || street.length() <= 0
-                || number.length() <= 0 || cityBox.getSelectedItem() == null || neighborhood.length() <= 0) {
-            return false;
-        }
+    protected void createAction() throws InvalidFormException, CrudException {
+    	if (!getForm()) {
+    		throw new InvalidFormException("Invalid Parameters.");
+    	}
 
         if (!ClientController.create(cpf, name, telephone, email, isPlatinum, street, number, neighborhood, city)) {
-            return false;
+        	throw new CrudException("Can't create new Client. Something went wrong.");
         }
-
-        return true;
     }
 
     @Override
-    protected boolean updateAction(final int row) {
-        getForm();
+    protected void updateAction(final int row) throws InvalidFormException, CrudException {
+    	if (!getForm()) {
+    		throw new InvalidFormException("Invalid Parameters.");
+    	}
 
         if (!ClientController.update(row, name, telephone, email, isPlatinum, street, number, neighborhood, city)) {
-            return false;
+        	throw new CrudException("Can't update new Client. Something went wrong.");
         }
-
-        return true;
     }
 
     @Override
-    protected boolean deleteAction(final int row) {
+    protected void deleteAction(final int row) throws CrudException {
         if (!ClientController.delete(row)) {
-            return false;
+        	throw new CrudException("Can't delete new Client. Something went wrong.");
         }
-
-        return true;
     }
 
     @Override
-    protected void enableForm(final boolean enabled) {
-        cpfField.setEnabled(enabled);
+    protected void enableForm(final boolean enabled, final boolean isUpdate) {
+    	cpfField.setEnabled(isUpdate ? false : enabled);
         nameField.setEnabled(enabled);
         telephoneField.setEnabled(enabled);
         emailField.setEnabled(enabled);

@@ -45,7 +45,7 @@ public class EmployeeView extends CrudPanel {
      * Getters and Setters *
      ***********************/
 
-    private void getForm() {
+    private boolean getForm() {
         cpf = cpfField.getText();
         name = nameField.getText();
         telephone = telephoneField.getText();
@@ -54,6 +54,13 @@ public class EmployeeView extends CrudPanel {
         number = numberField.getText();
         neighborhood = neighborhoodField.getText();
         city = (City) cityBox.getSelectedItem();
+        
+        if (cpf.length() <= 0 || name.length() <= 0 || telephone.length() <= 0 || street.length() <= 0
+                || number.length() <= 0 || cityBox.getSelectedItem() == null || neighborhood.length() <= 0) {
+            return false;
+        }
+        
+        return true;
     }
 
     /********************
@@ -185,44 +192,37 @@ public class EmployeeView extends CrudPanel {
     }
 
     @Override
-    protected boolean createAction() {
-        getForm();
-
-        if (cpf.length() <= 0 || name.length() <= 0 || telephone.length() <= 0 || street.length() <= 0
-                || number.length() <= 0 || neighborhood.length() <= 0) {
-            return false;
-        }
+    protected void createAction() throws InvalidFormException, CrudException {
+    	if (!getForm()) {
+    		throw new InvalidFormException("Invalid Parameters.");
+    	}
 
         if (!EmployeeController.create(cpf, name, telephone, email, street, number, neighborhood, city)) {
-            return false;
+        	throw new CrudException("Can't create new Employee. Something went wrong.");
         }
-
-        return true;
     }
 
     @Override
-    protected boolean updateAction(final int row) {
-        getForm();
+    protected void updateAction(final int row) throws InvalidFormException, CrudException {
+    	if (!getForm()) {
+    		throw new InvalidFormException("Invalid Parameters.");
+    	}
 
         if (!EmployeeController.update(row, name, telephone, email, street, number, neighborhood, city)) {
-            return false;
+        	throw new CrudException("Can't update new Employee. Something went wrong.");
         }
-
-        return true;
     }
 
     @Override
-    protected boolean deleteAction(final int row) {
+    protected void deleteAction(final int row) throws CrudException {
         if (!EmployeeController.delete(row)) {
-            return false;
+        	throw new CrudException("Can't delete new Employee. Something went wrong.");
         }
-
-        return true;
     }
 
     @Override
-    protected void enableForm(final boolean enabled) {
-        cpfField.setEnabled(enabled);
+    protected void enableForm(final boolean enabled, final boolean isUpdate) {
+    	cpfField.setEnabled(isUpdate ? false : enabled);
         nameField.setEnabled(enabled);
         telephoneField.setEnabled(enabled);
         emailField.setEnabled(enabled);
