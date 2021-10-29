@@ -36,7 +36,7 @@ public class View {
 
         JMenu mnNew = new JMenu("New");
         menuBar.add(mnNew);
-        
+
         JMenuItem mntmNewClient = new JMenuItem("Client");
         mntmNewClient.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -46,7 +46,7 @@ public class View {
             }
         });
         mnNew.add(mntmNewClient);
-                
+
         JMenuItem mntmNewCity = new JMenuItem("City");
         mntmNewCity.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -56,44 +56,44 @@ public class View {
             }
         });
         mnNew.add(mntmNewCity);
-        
+
         JMenuItem mntmNewEmployee = new JMenuItem("Employee");
         mntmNewEmployee.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		frame.setTitle("Employee Editor");
-        		frame.setBounds(100, 100, 500, 626);
-        		switchPanes(new EmployeeView());
-        	}
+            public void actionPerformed(ActionEvent e) {
+                frame.setTitle("Employee Editor");
+                frame.setBounds(100, 100, 500, 626);
+                switchPanes(new EmployeeView());
+            }
         });
         mnNew.add(mntmNewEmployee);
-        
+
         JMenuItem mntmNewItem = new JMenuItem("Item");
         mntmNewItem.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		frame.setTitle("Item Editor");
-        		frame.setBounds(100, 100, 500, 558);
-        		switchPanes(new ItemView());
-        	}
+            public void actionPerformed(ActionEvent e) {
+                frame.setTitle("Item Editor");
+                frame.setBounds(100, 100, 500, 558);
+                switchPanes(new ItemView());
+            }
         });
         mnNew.add(mntmNewItem);
-        
+
         JMenuItem mntmNewModel = new JMenuItem("Model");
         mntmNewModel.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 frame.setTitle("Model Editor");
                 frame.setBounds(100, 100, 500, 450);
                 switchPanes(new ModelView());
-        	}
+            }
         });
         mnNew.add(mntmNewModel);
-        
+
         JMenuItem mntmNewService = new JMenuItem("Service");
         mntmNewService.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
                 frame.setTitle("Service Editor");
                 frame.setBounds(100, 100, 500, 660);
                 switchPanes(new ServiceOrderView());
-        	}
+            }
         });
         mnNew.add(mntmNewService);
 

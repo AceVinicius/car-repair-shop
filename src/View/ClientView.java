@@ -59,12 +59,12 @@ public class ClientView extends CrudPanel {
         number = numberField.getText();
         neighborhood = neighborhoodField.getText();
         city = (City) cityBox.getSelectedItem();
-        
+
         if (cpf.length() <= 0 || name.length() <= 0 || telephone.length() <= 0 || street.length() <= 0
                 || number.length() <= 0 || cityBox.getSelectedItem() == null || neighborhood.length() <= 0) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -204,36 +204,36 @@ public class ClientView extends CrudPanel {
 
     @Override
     protected void createAction() throws InvalidFormException, CrudException {
-    	if (!getForm()) {
-    		throw new InvalidFormException("Invalid Parameters.");
-    	}
+        if (!getForm()) {
+            throw new InvalidFormException("Invalid Parameters.");
+        }
 
         if (!ClientController.create(cpf, name, telephone, email, isPlatinum, street, number, neighborhood, city)) {
-        	throw new CrudException("Can't create new Client. Something went wrong.");
+            throw new CrudException("Can't create new Client. Something went wrong.");
         }
     }
 
     @Override
     protected void updateAction(final int row) throws InvalidFormException, CrudException {
-    	if (!getForm()) {
-    		throw new InvalidFormException("Invalid Parameters.");
-    	}
+        if (!getForm()) {
+            throw new InvalidFormException("Invalid Parameters.");
+        }
 
         if (!ClientController.update(row, name, telephone, email, isPlatinum, street, number, neighborhood, city)) {
-        	throw new CrudException("Can't update new Client. Something went wrong.");
+            throw new CrudException("Can't update new Client. Something went wrong.");
         }
     }
 
     @Override
     protected void deleteAction(final int row) throws CrudException {
         if (!ClientController.delete(row)) {
-        	throw new CrudException("Can't delete new Client. Something went wrong.");
+            throw new CrudException("Can't delete new Client. Something went wrong.");
         }
     }
 
     @Override
     protected void enableForm(final boolean enabled, final boolean isUpdate) {
-    	cpfField.setEnabled(isUpdate ? false : enabled);
+        cpfField.setEnabled(isUpdate ? false : enabled);
         nameField.setEnabled(enabled);
         telephoneField.setEnabled(enabled);
         emailField.setEnabled(enabled);

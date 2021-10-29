@@ -22,14 +22,14 @@ public class ModelView extends CrdPanel {
     /***********************
      * Getters and Setters *
      ***********************/
-    
+
     private boolean getForm() {
         name = nameField.getText();
-        
+
         if (name.length() <= 0) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -37,16 +37,16 @@ public class ModelView extends CrdPanel {
      * Abstract Methods *
      ********************/
 
-	@Override
-	protected DefaultTableModel getTableModel() {
-		return ModelController.getTableModel();
-	}
+    @Override
+    protected DefaultTableModel getTableModel() {
+        return ModelController.getTableModel();
+    }
 
-	@Override
-	protected void form(JPanel panel, JButton btnCancel, JButton btnSave) {
-panel.setBounds(10, 289, 464, 90);
-		
-		JLabel nameLabel = new JLabel("Model*");
+    @Override
+    protected void form(JPanel panel, JButton btnCancel, JButton btnSave) {
+        panel.setBounds(10, 289, 464, 90);
+
+        JLabel nameLabel = new JLabel("Model*");
         nameLabel.setBounds(10, 26, 43, 14);
         panel.add(nameLabel);
 
@@ -55,43 +55,43 @@ panel.setBounds(10, 289, 464, 90);
         nameField.setColumns(10);
         nameField.setBounds(63, 23, 391, 20);
         panel.add(nameField);
-        
+
         btnCancel.setBounds(129, 56, 89, 23);
         btnSave.setBounds(228, 56, 89, 23);
-	}
+    }
 
-	@Override
-	protected void selectedRowAction(final int row) {
+    @Override
+    protected void selectedRowAction(final int row) {
         Object[] newRow = ModelController.read(row);
 
         nameField.setText(newRow[0].toString());
-	}
+    }
 
-	@Override
-	protected void createAction() throws InvalidFormException, CrudException {
-		if (!getForm()) {
-			throw new InvalidFormException("Invalid Parameters.");
-    	}
+    @Override
+    protected void createAction() throws InvalidFormException, CrudException {
+        if (!getForm()) {
+            throw new InvalidFormException("Invalid Parameters.");
+        }
 
         if (!ModelController.create(name)) {
-        	throw new CrudException("Can't create selected Vehicle. Something went wrong.");
+            throw new CrudException("Can't create selected Vehicle. Something went wrong.");
         }
-	}
+    }
 
-	@Override
-	protected void deleteAction(final int row) throws CrudException {
-		if (!ModelController.delete(row)) {
-			throw new CrudException("Can't delete selected Vehicle. Something went wrong.");
+    @Override
+    protected void deleteAction(final int row) throws CrudException {
+        if (!ModelController.delete(row)) {
+            throw new CrudException("Can't delete selected Vehicle. Something went wrong.");
         }
-	}
+    }
 
-	@Override
-	protected void enableForm(boolean enabled) {
-		nameField.setEnabled(enabled);
-	}
+    @Override
+    protected void enableForm(boolean enabled) {
+        nameField.setEnabled(enabled);
+    }
 
-	@Override
-	protected void cleanForm() {
-		nameField.setText("");
-	}
+    @Override
+    protected void cleanForm() {
+        nameField.setText("");
+    }
 }

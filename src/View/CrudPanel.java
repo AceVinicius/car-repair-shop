@@ -95,12 +95,13 @@ public abstract class CrudPanel extends JPanel {
         btnDelete.setBounds(10, 255, 97, 23);
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	try {
-            		deleteAction(selectedRow);
-            		JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information", JOptionPane.INFORMATION_MESSAGE);             		
-            	} catch(CrudException ex) {
-            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            	}
+                try {
+                    deleteAction(selectedRow);
+                    JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (CrudException ex) {
+                    JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
                 table.setModel(getTableModel());
                 cleanForm();
                 mode = K_DEFAULT;
@@ -116,53 +117,54 @@ public abstract class CrudPanel extends JPanel {
         /*
          * Create Form JPanel
          */
-
         panel = new JPanel();
         panel.setLayout(null);
         panel.setBorder(new TitledBorder(null, "Form", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         this.add(panel);
 
-	    btnSave = new JButton("Save");
-	    panel.add(btnSave);
-	    btnSave.addActionListener(new ActionListener() {
-	        public void actionPerformed(ActionEvent e) {
-	            switch (mode) {
-	            case K_CREATE:
-	            	try {
-	            		createAction();
-	            		JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information", JOptionPane.INFORMATION_MESSAGE);
-	            	} catch(InvalidFormException ex) {
-	            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
-	            		return;
-	            	} catch(CrudException ex) {
-	            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	            		return;
-	            	}
-	
-	                break;
-	
-	            case K_UPDATE:
-	            	try {
-	            		updateAction(selectedRow);
-	            		JOptionPane.showMessageDialog(panel, "Record Updated successfully.", "Information", JOptionPane.INFORMATION_MESSAGE);
-	            	} catch(InvalidFormException ex) {
-	            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
-	            		return;
-	            	} catch(CrudException ex) {
-	            		JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-	            		return;
-	            	}
-	
-	                break;
-	            }
-	            table.setModel(getTableModel());
-	            cleanForm();
-	            mode = K_DEFAULT;
-	            formMode(mode);
-	        }
-	    });
-	    btnSave.setEnabled(false);
-                
+        btnSave = new JButton("Save");
+        panel.add(btnSave);
+        btnSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                switch (mode) {
+                case K_CREATE:
+                    try {
+                        createAction();
+                        JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } catch (InvalidFormException ex) {
+                        JOptionPane.showMessageDialog(panel, ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    } catch (CrudException ex) {
+                        JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    break;
+
+                case K_UPDATE:
+                    try {
+                        updateAction(selectedRow);
+                        JOptionPane.showMessageDialog(panel, "Record Updated successfully.", "Information",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } catch (InvalidFormException ex) {
+                        JOptionPane.showMessageDialog(panel, ex.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    } catch (CrudException ex) {
+                        JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    break;
+                }
+                table.setModel(getTableModel());
+                cleanForm();
+                mode = K_DEFAULT;
+                formMode(mode);
+            }
+        });
+        btnSave.setEnabled(false);
+
         btnCancel = new JButton("Cancel");
         panel.add(btnCancel);
         btnCancel.addActionListener(new ActionListener() {
@@ -173,7 +175,7 @@ public abstract class CrudPanel extends JPanel {
             }
         });
         btnCancel.setEnabled(false);
-        
+
         form(panel, btnCancel, btnSave);
 
         formMode(mode);

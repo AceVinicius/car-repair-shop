@@ -27,8 +27,7 @@ public class Vehicle implements IVehicle {
         this(model, chassis, year, color, null);
     }
 
-    public Vehicle(final Model model, final String chassis, final int year, final String color,
-            final String plate) {
+    public Vehicle(final Model model, final String chassis, final int year, final String color, final String plate) {
         this.owner = null;
         this.model = model;
         this.chassis = chassis;

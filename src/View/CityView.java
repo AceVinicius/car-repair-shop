@@ -32,11 +32,11 @@ public class CityView extends CrdPanel {
     private boolean getForm() {
         name = nameField.getText();
         state = stateField.getText();
-        
+
         if (name.length() <= 0 || state.length() <= 0) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -51,7 +51,7 @@ public class CityView extends CrdPanel {
 
     @Override
     protected void form(JPanel panel, JButton btnCancel, JButton btnSave) {
-    	panel.setBounds(10, 289, 464, 90);
+        panel.setBounds(10, 289, 464, 90);
 
         JLabel nameLabel = new JLabel("Name*");
         nameLabel.setBounds(10, 26, 44, 14);
@@ -91,19 +91,19 @@ public class CityView extends CrdPanel {
 
     @Override
     protected void createAction() throws InvalidFormException, CrudException {
-    	if (!getForm()) {
-    		throw new InvalidFormException("Invalid Parameters.");
-    	}
-        
+        if (!getForm()) {
+            throw new InvalidFormException("Invalid Parameters.");
+        }
+
         if (!CityController.create(name, state)) {
-        	throw new CrudException("Can't create new City. Something went wrong.");
+            throw new CrudException("Can't create new City. Something went wrong.");
         }
     }
 
     @Override
     protected void deleteAction(final int row) throws CrudException {
         if (!CityController.delete(row)) {
-        	throw new CrudException("Can't delete selected City. Something went wrong.");
+            throw new CrudException("Can't delete selected City. Something went wrong.");
         }
     }
 

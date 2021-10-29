@@ -10,85 +10,75 @@ import Model.ServiceOrder;
 
 public class ServiceOrderController {
 
-	/********************
-	 * Class Properties *
-	 ********************/
+    /********************
+     * Class Properties *
+     ********************/
 
-	public static ArrayList<ServiceOrder> services = new ArrayList<ServiceOrder>();
+    public static ArrayList<ServiceOrder> services = new ArrayList<ServiceOrder>();
 
-	/**********************
-	 * Class Constructors *
-	 **********************/
+    /**********************
+     * Class Constructors *
+     **********************/
 
-	public static boolean create(final int mileage, final IVehicle vehicle, final IEmployee employee, final String description) {
-		ServiceOrder newServiceOrder = new ServiceOrder(vehicle, mileage);
-		
-		if (employee != null) {
-			newServiceOrder.setConsultant(employee);
-		}
-		if (description.length() > 0) {
-			newServiceOrder.setDescription(description);			
-		}
+    public static boolean create(final int mileage, final IVehicle vehicle, final IEmployee employee,
+            final String description) {
+        ServiceOrder newServiceOrder = new ServiceOrder(vehicle, mileage);
 
-		return services.add(newServiceOrder);
-	}
+        if (employee != null) {
+            newServiceOrder.setConsultant(employee);
+        }
+        if (description.length() > 0) {
+            newServiceOrder.setDescription(description);
+        }
 
-	public static Object[] read(final int index) {
-		ServiceOrder item = services.get(index);
+        return services.add(newServiceOrder);
+    }
 
-		Object[] row = {
-			item.getNumber(),
-			item.getDate(),
-			item.getClient(),
-			item.getVehicle(),
-			item.getMileage(),
-			item.getConsultant()
-		};
+    public static Object[] read(final int index) {
+        ServiceOrder item = services.get(index);
 
-		return row;
-	}
+        Object[] row = { item.getNumber(), item.getDate(), item.getClient(), item.getVehicle(), item.getMileage(),
+                item.getConsultant() };
 
-	public static boolean update(final int index, final int mileage, final IEmployee employee, final String description) {
-		ServiceOrder item = (ServiceOrder) services.get(index);
+        return row;
+    }
 
-		if (item == null) {
-			return false;
-		}
+    public static boolean update(final int index, final int mileage, final IEmployee employee,
+            final String description) {
+        ServiceOrder item = (ServiceOrder) services.get(index);
 
-		item.setMileage(mileage);
-		item.setConsultant(employee);
-		item.setDescription(description);
+        if (item == null) {
+            return false;
+        }
 
-		return true;
-	}
+        item.setMileage(mileage);
+        item.setConsultant(employee);
+        item.setDescription(description);
 
-	public static boolean delete(final int index) {
-		ServiceOrder item = services.get(index);
+        return true;
+    }
 
-		if (item == null) {
-			return false;
-		}
+    public static boolean delete(final int index) {
+        ServiceOrder item = services.get(index);
 
-		return services.remove(item);
-	}
+        if (item == null) {
+            return false;
+        }
 
-	public static DefaultTableModel getTableModel() {
-		Object[] header = { "Number", "Date", "Client", "Vehicle", "Mileage", "Consultant" };
+        return services.remove(item);
+    }
 
-		DefaultTableModel model = new DefaultTableModel(header, 0);
+    public static DefaultTableModel getTableModel() {
+        Object[] header = { "Number", "Date", "Client", "Vehicle", "Mileage", "Consultant" };
 
-		for (int i = 0; i < services.size(); i++) {
-			ServiceOrder curr = services.get(i);
-			model.addRow(new Object[] { 
-				curr.getNumber(),
-				curr.getDate(),
-				curr.getClient(),
-				curr.getVehicle(),
-				curr.getMileage(),
-				curr.getConsultant()
-			});
-		}
+        DefaultTableModel model = new DefaultTableModel(header, 0);
 
-		return model;
-	}
+        for (int i = 0; i < services.size(); i++) {
+            ServiceOrder curr = services.get(i);
+            model.addRow(new Object[] { curr.getNumber(), curr.getDate(), curr.getClient(), curr.getVehicle(),
+                    curr.getMileage(), curr.getConsultant() });
+        }
+
+        return model;
+    }
 }
