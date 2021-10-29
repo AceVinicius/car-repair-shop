@@ -21,6 +21,7 @@ public class EmployeeView extends CrudPanel {
     /********************
      * Class Properties *
      ********************/
+
     private static final long serialVersionUID = -5904697069843558554L;
 
     private JFormattedTextField cpfField;
@@ -73,12 +74,12 @@ public class EmployeeView extends CrudPanel {
     }
 
     @Override
-    protected void form(JPanel form, JButton btnCancel, JButton btnSave) {
-        form.setBounds(10, 289, 464, 266);
+    protected void form(JPanel panel, JButton btnCancel, JButton btnSave) {
+    	panel.setBounds(10, 289, 464, 266);
 
         JLabel cpfLabel = new JLabel("CPF*");
         cpfLabel.setBounds(10, 26, 26, 14);
-        form.add(cpfLabel);
+        panel.add(cpfLabel);
 
         try {
             cpfField = new JFormattedTextField(new MaskFormatter("###.###.###-##"));
@@ -87,22 +88,22 @@ public class EmployeeView extends CrudPanel {
         }
         cpfField.setEnabled(false);
         cpfField.setColumns(10);
-        cpfField.setBounds(46, 23, 121, 20);
-        form.add(cpfField);
+        cpfField.setBounds(74, 23, 93, 20);
+        panel.add(cpfField);
 
         JLabel nameLabel = new JLabel("Name*");
         nameLabel.setBounds(177, 26, 34, 14);
-        form.add(nameLabel);
+        panel.add(nameLabel);
 
         nameField = new JTextField();
         nameField.setEnabled(false);
         nameField.setColumns(10);
         nameField.setBounds(221, 23, 233, 20);
-        form.add(nameField);
+        panel.add(nameField);
 
         JLabel telephoneLabel = new JLabel("Telephone*");
         telephoneLabel.setBounds(10, 57, 61, 14);
-        form.add(telephoneLabel);
+        panel.add(telephoneLabel);
 
         try {
             telephoneField = new JFormattedTextField(new MaskFormatter("(##) #####-####"));
@@ -111,23 +112,23 @@ public class EmployeeView extends CrudPanel {
         }
         telephoneField.setEnabled(false);
         telephoneField.setColumns(10);
-        telephoneField.setBounds(75, 54, 121, 20);
-        form.add(telephoneField);
+        telephoneField.setBounds(74, 54, 93, 20);
+        panel.add(telephoneField);
 
         JLabel emailLabel = new JLabel("Email");
-        emailLabel.setBounds(206, 57, 46, 14);
-        form.add(emailLabel);
+        emailLabel.setBounds(177, 57, 46, 14);
+        panel.add(emailLabel);
 
         emailField = new JTextField();
         emailField.setEnabled(false);
         emailField.setColumns(10);
-        emailField.setBounds(244, 54, 210, 20);
-        form.add(emailField);
+        emailField.setBounds(221, 54, 233, 20);
+        panel.add(emailField);
 
         JPanel address = new JPanel();
         address.setBorder(new TitledBorder(null, "Address", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         address.setBounds(10, 90, 444, 129);
-        form.add(address);
+        panel.add(address);
         address.setLayout(null);
 
         JLabel streetLabel = new JLabel("Street*");

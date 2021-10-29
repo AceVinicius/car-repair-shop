@@ -173,7 +173,7 @@ public abstract class CrudPanel extends JPanel {
             }
         });
         btnCancel.setEnabled(false);
-
+        
         form(panel, btnCancel, btnSave);
 
         formMode(mode);

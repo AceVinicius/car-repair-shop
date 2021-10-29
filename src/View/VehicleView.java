@@ -123,7 +123,7 @@ public class VehicleView extends CrudPanel {
         modelLabel.setBounds(10, 87, 46, 14);
         panel.add(modelLabel);
 
-        modelBox = new JComboBox<>(ModelController.getAll().toArray());
+        modelBox = new JComboBox<>( ModelController.getAll().toArray());
         modelBox.setBounds(66, 83, 160, 22);
         panel.add(modelBox);
 
