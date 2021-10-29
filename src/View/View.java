@@ -67,6 +67,16 @@ public class View {
         });
         mnNew.add(mntmNewEmployee);
         
+        JMenuItem mntmNewItem = new JMenuItem("Item");
+        mntmNewItem.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		frame.setTitle("Item Editor");
+        		frame.setBounds(100, 100, 500, 558);
+        		switchPanes(new ItemView());
+        	}
+        });
+        mnNew.add(mntmNewItem);
+        
         JMenuItem mntmNewModel = new JMenuItem("Model");
         mntmNewModel.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -76,6 +86,16 @@ public class View {
         	}
         });
         mnNew.add(mntmNewModel);
+        
+        JMenuItem mntmNewService = new JMenuItem("Service");
+        mntmNewService.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                frame.setTitle("Service Editor");
+                frame.setBounds(100, 100, 500, 660);
+                switchPanes(new ServiceOrderView());
+        	}
+        });
+        mnNew.add(mntmNewService);
 
         JMenuItem mntmNewVehicle = new JMenuItem("Vehicle");
         mntmNewVehicle.addActionListener(new ActionListener() {
