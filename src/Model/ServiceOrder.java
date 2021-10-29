@@ -16,7 +16,7 @@ public class ServiceOrder {
     private final IClient client;
     private final IVehicle vehicle;
 
-    private int kmAtual;
+    private int mileage;
     private String description;
     private IEmployee consultant;
 
@@ -26,10 +26,10 @@ public class ServiceOrder {
      * Class Constructors *
      **********************/
 
-    public ServiceOrder(final IVehicle vehicle, final int kmAtual) {
+    public ServiceOrder(final IVehicle vehicle, final int mileage) {
         this.number = numberCounter++;
         this.vehicle = vehicle;
-        this.kmAtual = kmAtual;
+        this.mileage = mileage;
         this.date = new Date();
         this.client = vehicle.getOwner();
         this.items = new HashSet<>();
@@ -55,12 +55,12 @@ public class ServiceOrder {
         this.description = description;
     }
 
-    public int getKmAtual() {
-        return kmAtual;
+    public int getMileage() {
+        return mileage;
     }
 
-    public void setKmAtual(int kmAtual) {
-        this.kmAtual = kmAtual;
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
     }
 
     public IEmployee getConsultant() {
@@ -169,7 +169,7 @@ public class ServiceOrder {
 
         sb.append("-----( Ordem de serviço " + this.getNumber() + " )-----\n\n");
         sb.append("Data:          " + this.getDate() + "\n");
-        sb.append("KmAtual: " + this.getKmAtual() + "\n");
+        sb.append("Mileage: " + this.getMileage() + "\n");
         sb.append("Descrição:     " + this.getDescription() + "\n");
 
         sb.append("\n-----( Consultor )-----\n");
