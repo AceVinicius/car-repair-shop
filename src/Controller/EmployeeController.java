@@ -41,6 +41,10 @@ public class EmployeeController {
 
 		return row;
 	}
+	
+	public static ArrayList<IEmployee> getAll() {
+        return employees;
+    }
 
 	public static boolean update(final int index, final String name, final String telephone, final String email,
 			final String street, final String number, final String neighborhood, final City city) {

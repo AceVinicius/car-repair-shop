@@ -44,16 +44,16 @@ public class ModelView extends CrdPanel {
 
 	@Override
 	protected void form(JPanel panel, JButton btnCancel, JButton btnSave) {
-		panel.setBounds(10, 289, 464, 90);
+panel.setBounds(10, 289, 464, 90);
 		
 		JLabel nameLabel = new JLabel("Model*");
-        nameLabel.setBounds(10, 26, 54, 14);
+        nameLabel.setBounds(10, 26, 43, 14);
         panel.add(nameLabel);
 
         nameField = new JTextField();
         nameField.setEnabled(false);
         nameField.setColumns(10);
-        nameField.setBounds(74, 23, 233, 20);
+        nameField.setBounds(63, 23, 391, 20);
         panel.add(nameField);
         
         btnCancel.setBounds(129, 56, 89, 23);

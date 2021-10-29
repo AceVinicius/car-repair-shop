@@ -49,6 +49,10 @@ public class VehicleController {
 
 		return row;
 	}
+	
+	public static ArrayList<IVehicle> getAll() {
+        return vehicles;
+    }
 
 	public static boolean update(final int index, final String color, final String plate, final IClient client) {
 		Vehicle vehicle = (Vehicle) vehicles.get(index);

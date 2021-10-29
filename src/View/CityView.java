@@ -51,20 +51,20 @@ public class CityView extends CrdPanel {
 
     @Override
     protected void form(JPanel panel, JButton btnCancel, JButton btnSave) {
-        panel.setBounds(10, 289, 464, 90);
+    	panel.setBounds(10, 289, 464, 90);
 
-        JLabel nameLabel = new JLabel("City Name*");
-        nameLabel.setBounds(10, 26, 54, 14);
+        JLabel nameLabel = new JLabel("Name*");
+        nameLabel.setBounds(10, 26, 44, 14);
         panel.add(nameLabel);
 
         nameField = new JTextField();
         nameField.setEnabled(false);
         nameField.setColumns(10);
-        nameField.setBounds(74, 23, 233, 20);
+        nameField.setBounds(53, 23, 244, 20);
         panel.add(nameField);
 
         JLabel stateLabel = new JLabel("State*");
-        stateLabel.setBounds(317, 26, 26, 14);
+        stateLabel.setBounds(307, 26, 36, 14);
         panel.add(stateLabel);
 
         try {
