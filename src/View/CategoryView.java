@@ -50,13 +50,13 @@ public class CategoryView extends CrdPanel {
         panel.setBounds(10, 289, 464, 90);
 
         JLabel nameLabel = new JLabel("Category*");
-        nameLabel.setBounds(10, 26, 43, 14);
+        nameLabel.setBounds(10, 26, 55, 14);
         panel.add(nameLabel);
 
         nameField = new JTextField();
         nameField.setEnabled(false);
         nameField.setColumns(10);
-        nameField.setBounds(63, 23, 391, 20);
+        nameField.setBounds(70, 23, 384, 20);
         panel.add(nameField);
 
         btnCancel.setBounds(129, 56, 89, 23);

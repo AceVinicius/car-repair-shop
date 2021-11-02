@@ -37,6 +37,16 @@ public class View {
         JMenu mnNew = new JMenu("New");
         menuBar.add(mnNew);
 
+        JMenuItem mntmNewCategory = new JMenuItem("Category");
+        mntmNewCategory.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                frame.setTitle("Category Editor");
+                frame.setBounds(100, 100, 500, 450);
+                switchPanes(new CategoryView());
+            }
+        });
+        mnNew.add(mntmNewCategory);
+
         JMenuItem mntmNewClient = new JMenuItem("Client");
         mntmNewClient.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
