@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
 import Controller.ClientController;
+import Controller.Controller;
 import Controller.ModelController;
 import Controller.VehicleController;
 import Model.IClient;
@@ -29,8 +30,8 @@ public class VehicleView extends CrudPanel {
     private JFormattedTextField yearField;
     private JTextField colorField;
     private JFormattedTextField plateField;
-    private JComboBox<?> modelBox;
-    private JComboBox<?> ownerBox;
+    private JComboBox<Model> modelBox;
+    private JComboBox<IClient> ownerBox;
 
     private String chassis;
     private String year;
@@ -43,7 +44,7 @@ public class VehicleView extends CrudPanel {
      * Getters and Setters *
      ***********************/
 
-    private void getForm() throws InvalidFormException {
+    private boolean getForm() {
         chassis = chassisField.getText();
         year = yearField.getText();
         color = colorField.getText();
@@ -52,8 +53,10 @@ public class VehicleView extends CrudPanel {
         owner = (IClient) ownerBox.getSelectedItem();
 
         if (chassis.length() <= 0 || !isNumeric(year) || color.length() <= 0 || model == null) {
-            throw new InvalidFormException("Invalid Parameters.");
+            return false;
         }
+
+        return true;
     }
 
     /******************************
@@ -123,7 +126,9 @@ public class VehicleView extends CrudPanel {
         modelLabel.setBounds(10, 87, 46, 14);
         panel.add(modelLabel);
 
-        modelBox = new JComboBox<>(ModelController.getAll().toArray());
+        ModelController modelController = Controller.getModelController();
+
+        modelBox = new JComboBox<Model>(modelController.getDefaultComboBoxModel());
         modelBox.setBounds(66, 83, 160, 22);
         panel.add(modelBox);
 
@@ -131,7 +136,9 @@ public class VehicleView extends CrudPanel {
         ownerLabel.setBounds(248, 87, 46, 14);
         panel.add(ownerLabel);
 
-        ownerBox = new JComboBox<>(ClientController.getAll().toArray());
+        ClientController clientController = Controller.getClientController();
+
+        ownerBox = new JComboBox<IClient>(clientController.getDefaultComboBoxModel());
         ownerBox.setBounds(294, 83, 160, 22);
         panel.add(ownerBox);
 
@@ -140,8 +147,10 @@ public class VehicleView extends CrudPanel {
     }
 
     @Override
-    protected void selectedRowAction(final int row) {
-        Object[] newRow = VehicleController.read(row);
+    protected void selectedRowAction(final Object id) {
+        VehicleController vehicleController = Controller.getVehicleController();
+
+        Object[] newRow = vehicleController.read(id);
 
         chassisField.setText(newRow[0].toString());
         yearField.setText(newRow[1].toString());
@@ -153,27 +162,31 @@ public class VehicleView extends CrudPanel {
 
     @Override
     protected void createAction() throws InvalidFormException, CrudException {
-        getForm();
-
-        if (!VehicleController.create(chassis, Integer.parseInt(year), color, plate, model, owner)) {
-            throw new CrudException("Can't create new Vehicle. Something went wrong.");
+        if (!getForm()) {
+            throw new InvalidFormException("Invalid Parameters.");
         }
+
+        VehicleController vehicleController = Controller.getVehicleController();
+
+        vehicleController.create(chassis, Integer.parseInt(year), color, plate, model, owner);
     }
 
     @Override
-    protected void updateAction(final int row) throws InvalidFormException, CrudException {
-        getForm();
-
-        if (!VehicleController.update(row, color, plate, owner)) {
-            throw new CrudException("Can't update selected Vehicle. Something went wrong.");
+    protected void updateAction(final Object id) throws InvalidFormException, CrudException {
+        if (!getForm()) {
+            throw new InvalidFormException("Invalid Parameters.");
         }
+
+        VehicleController vehicleController = Controller.getVehicleController();
+
+        vehicleController.update(id, color, plate, owner);
     }
 
     @Override
-    protected void deleteAction(final int row) throws CrudException {
-        if (!VehicleController.delete(row)) {
-            throw new CrudException("Can't delete selected Vehicle. Something went wrong.");
-        }
+    protected void deleteAction(final Object id) throws CrudException {
+        VehicleController vehicleController = Controller.getVehicleController();
+
+        vehicleController.delete(id);
     }
 
     @Override

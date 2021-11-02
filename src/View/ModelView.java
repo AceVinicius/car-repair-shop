@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import Controller.Controller;
 import Controller.ModelController;
 
 public class ModelView extends CrdPanel {
@@ -39,7 +40,9 @@ public class ModelView extends CrdPanel {
 
     @Override
     protected DefaultTableModel getTableModel() {
-        return ModelController.getTableModel();
+        ModelController modelController = Controller.getModelController();
+
+        return modelController.getTableModel();
     }
 
     @Override
@@ -61,8 +64,10 @@ public class ModelView extends CrdPanel {
     }
 
     @Override
-    protected void selectedRowAction(final int row) {
-        Object[] newRow = ModelController.read(row);
+    protected void selectedRowAction(final Object id) {
+        ModelController modelController = Controller.getModelController();
+
+        Object[] newRow = modelController.read(id);
 
         nameField.setText(newRow[0].toString());
     }
@@ -73,16 +78,16 @@ public class ModelView extends CrdPanel {
             throw new InvalidFormException("Invalid Parameters.");
         }
 
-        if (!ModelController.create(name)) {
-            throw new CrudException("Can't create selected Vehicle. Something went wrong.");
-        }
+        ModelController modelController = Controller.getModelController();
+
+        modelController.create(name);
     }
 
     @Override
-    protected void deleteAction(final int row) throws CrudException {
-        if (!ModelController.delete(row)) {
-            throw new CrudException("Can't delete selected Vehicle. Something went wrong.");
-        }
+    protected void deleteAction(final Object id) throws CrudException {
+        ModelController modelController = Controller.getModelController();
+
+        modelController.delete(id);
     }
 
     @Override

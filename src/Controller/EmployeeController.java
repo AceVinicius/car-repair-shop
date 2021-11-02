@@ -1,5 +1,6 @@
 package Controller;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -59,14 +60,6 @@ public class EmployeeController implements Serializable {
         return model;
     }
 
-    /******************************
-     * Additional Private Methods *
-     ******************************/
-
-    private void persist() {
-        Controller.writeFile();
-    }
-
     /*****************************
      * Additional Public Methods *
      *****************************/
@@ -90,7 +83,7 @@ public class EmployeeController implements Serializable {
             throw new CrudException("Employee cannot be created.");
         }
 
-        persist();
+        Controller.writeFile();
     }
 
     public Object[] read(final Object id) {
@@ -120,11 +113,11 @@ public class EmployeeController implements Serializable {
         employee.getAddress().setNeighborhood(neighborhood);
         employee.getAddress().setCity(city);
 
-        persist();
+        Controller.writeFile();
     }
 
     public void delete(final Object id) throws CrudException {
-        IEmployee employee = (IEmployee) employees.get((String) id);
+        IEmployee employee = employees.get((String) id);
 
         if (employee == null) {
             throw new CrudException("Employee do not exists.");
@@ -135,6 +128,6 @@ public class EmployeeController implements Serializable {
         addressController.delete(employee.getAddress());
         employees.remove((String) id);
 
-        persist();
+        Controller.writeFile();
     }
 }

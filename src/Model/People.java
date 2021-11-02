@@ -1,9 +1,10 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class People implements IPeople {
+public class People implements IPeople, Serializable {
 
     /********************
      * Class Properties *

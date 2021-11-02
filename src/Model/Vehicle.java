@@ -1,9 +1,10 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Vehicle implements IVehicle {
+public class Vehicle implements IVehicle, Serializable {
 
     /********************
      * Class Properties *

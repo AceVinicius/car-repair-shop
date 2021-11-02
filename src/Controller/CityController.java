@@ -60,14 +60,6 @@ public class CityController implements Serializable {
         return model;
     }
 
-    /******************************
-     * Additional Private Methods *
-     ******************************/
-
-    private void persist() {
-        Controller.writeFile();
-    }
-
     /*****************************
      * Additional Public Methods *
      *****************************/
@@ -83,7 +75,7 @@ public class CityController implements Serializable {
             throw new CrudException("City cannot be created.");
         }
 
-        persist();
+        Controller.writeFile();
     }
 
     public Object[] read(final Object id) {
@@ -97,6 +89,6 @@ public class CityController implements Serializable {
     public void delete(final Object id) {
         cities.remove((String) id);
 
-        persist();
+        Controller.writeFile();
     }
 }

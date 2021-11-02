@@ -7,3 +7,6 @@
 # Eclipse Files
 .classpath
 .project
+
+# Locals
+data.bin

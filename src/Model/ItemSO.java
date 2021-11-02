@@ -1,6 +1,8 @@
 package Model;
 
-public class ItemSO {
+import java.io.Serializable;
+
+public class ItemSO implements Serializable {
 
     /********************
      * Class Properties *

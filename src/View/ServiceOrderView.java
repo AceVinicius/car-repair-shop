@@ -8,10 +8,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import Controller.Controller;
 import Controller.EmployeeController;
 import Controller.ServiceOrderController;
 import Controller.VehicleController;
 import Model.Employee;
+import Model.IEmployee;
+import Model.IVehicle;
 import Model.Vehicle;
 
 public class ServiceOrderView extends CrudPanel {
@@ -23,8 +26,8 @@ public class ServiceOrderView extends CrudPanel {
     private static final long serialVersionUID = 1324718682557675857L;
 
     private JTextField mileageField;
-    private JComboBox<?> vehicleBox;
-    private JComboBox<?> consultantBox;
+    private JComboBox<IVehicle> vehicleBox;
+    private JComboBox<IEmployee> consultantBox;
     private JTextArea descriptionArea;
 
     private String mileage;
@@ -63,7 +66,9 @@ public class ServiceOrderView extends CrudPanel {
 
     @Override
     protected DefaultTableModel getTableModel() {
-        return ServiceOrderController.getTableModel();
+        ServiceOrderController serviceOrderController = Controller.getServiceOrderController();
+
+        return serviceOrderController.getTableModel();
     }
 
     @Override
@@ -83,7 +88,9 @@ public class ServiceOrderView extends CrudPanel {
         vehicleLabel.setBounds(10, 56, 46, 14);
         panel.add(vehicleLabel);
 
-        vehicleBox = new JComboBox<>(VehicleController.getAll().toArray());
+        VehicleController vehicleController = Controller.getVehicleController();
+
+        vehicleBox = new JComboBox<IVehicle>(vehicleController.getDefaultComboBoxModel());
         vehicleBox.setBounds(76, 52, 152, 22);
         panel.add(vehicleBox);
 
@@ -91,7 +98,9 @@ public class ServiceOrderView extends CrudPanel {
         consultantLabel.setBounds(10, 23, 57, 14);
         panel.add(consultantLabel);
 
-        consultantBox = new JComboBox<>(EmployeeController.getAll().toArray());
+        EmployeeController employeeController = Controller.getEmployeeController();
+
+        consultantBox = new JComboBox<IEmployee>(employeeController.getDefaultComboBoxModel());
         consultantBox.setBounds(76, 19, 152, 22);
         panel.add(consultantBox);
 
@@ -108,8 +117,10 @@ public class ServiceOrderView extends CrudPanel {
     }
 
     @Override
-    protected void selectedRowAction(final int row) {
-        Object[] newRow = ServiceOrderController.read(row);
+    protected void selectedRowAction(final Object id) {
+        ServiceOrderController serviceOrderController = Controller.getServiceOrderController();
+
+        Object[] newRow = serviceOrderController.read(id);
 
         mileageField.setText(newRow[0].toString());
         consultantBox.setSelectedItem(newRow[1]);
@@ -123,27 +134,27 @@ public class ServiceOrderView extends CrudPanel {
             throw new InvalidFormException("Invalid Parameters.");
         }
 
-        if (!ServiceOrderController.create(Integer.parseInt(mileage), vehicle, consultant, description)) {
-            throw new CrudException("Can't create new Item. Something went wrong.");
-        }
+        ServiceOrderController serviceOrderController = Controller.getServiceOrderController();
+
+        serviceOrderController.create(Integer.parseInt(mileage), vehicle, consultant, description);
     }
 
     @Override
-    protected void updateAction(final int row) throws InvalidFormException, CrudException {
+    protected void updateAction(final Object id) throws InvalidFormException, CrudException {
         if (!getForm()) {
             throw new InvalidFormException("Invalid Parameters.");
         }
 
-        if (!ServiceOrderController.update(row, Integer.parseInt(mileage), consultant, description)) {
-            throw new CrudException("Can't update new Item. Something went wrong.");
-        }
+        ServiceOrderController serviceOrderController = Controller.getServiceOrderController();
+
+        serviceOrderController.update(id, Integer.parseInt(mileage), consultant, description);
     }
 
     @Override
-    protected void deleteAction(final int row) throws CrudException {
-        if (!ServiceOrderController.delete(row)) {
-            throw new CrudException("Can't delete new Item. Something went wrong.");
-        }
+    protected void deleteAction(final Object id) throws CrudException {
+        ServiceOrderController serviceOrderController = Controller.getServiceOrderController();
+
+        serviceOrderController.delete(id);
     }
 
     @Override

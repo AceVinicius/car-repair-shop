@@ -19,6 +19,9 @@ public class Controller implements Serializable {
     private ClientController clientController;
     private EmployeeController employeeController;
     private ItemController itemController;
+    private ModelController modelController;
+    private ServiceOrderController serviceOrderController;
+    private VehicleController vehicleController;
 
     /**********************
      * Class Constructors *
@@ -30,6 +33,9 @@ public class Controller implements Serializable {
         clientController = new ClientController();
         employeeController = new EmployeeController();
         itemController = new ItemController();
+        modelController = new ModelController();
+        serviceOrderController = new ServiceOrderController();
+        vehicleController = new VehicleController();
     }
 
     /***********************
@@ -58,6 +64,18 @@ public class Controller implements Serializable {
 
     public static ItemController getItemController() {
         return instance.itemController;
+    }
+
+    public static ModelController getModelController() {
+        return instance.modelController;
+    }
+
+    public static ServiceOrderController getServiceOrderController() {
+        return instance.serviceOrderController;
+    }
+
+    public static VehicleController getVehicleController() {
+        return instance.vehicleController;
     }
 
     /*****************************

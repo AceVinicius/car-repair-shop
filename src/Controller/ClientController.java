@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 import Model.Address;
@@ -32,8 +33,14 @@ public class ClientController implements Serializable {
      * Getters and Setters *
      ***********************/
 
-    public Map<String, IClient> getAll() {
-        return clients;
+    public DefaultComboBoxModel<IClient> getDefaultComboBoxModel() {
+        DefaultComboBoxModel<IClient> model = new DefaultComboBoxModel<>();
+
+        for (IClient client : clients.values()) {
+            model.addElement(client);
+        }
+
+        return model;
     }
 
     public DefaultTableModel getTableModel() {
@@ -53,14 +60,6 @@ public class ClientController implements Serializable {
         }
 
         return model;
-    }
-
-    /******************************
-     * Additional Private Methods *
-     ******************************/
-
-    private void persist() {
-        Controller.writeFile();
     }
 
     /*****************************
@@ -91,7 +90,7 @@ public class ClientController implements Serializable {
             throw new CrudException("Client cannot be created.");
         }
 
-        persist();
+        Controller.writeFile();
     }
 
     public Object[] read(final Object id) {
@@ -123,7 +122,7 @@ public class ClientController implements Serializable {
         client.getAddress().setNeighborhood(neighborhood);
         client.getAddress().setCity(city);
 
-        persist();
+        Controller.writeFile();
     }
 
     public void delete(final Object id) throws CrudException {
@@ -138,6 +137,6 @@ public class ClientController implements Serializable {
         addressController.delete(client.getAddress());
         clients.remove((String) id);
 
-        persist();
+        Controller.writeFile();
     }
 }

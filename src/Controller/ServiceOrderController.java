@@ -1,27 +1,69 @@
 package Controller;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.TreeMap;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 import Model.IEmployee;
 import Model.IVehicle;
 import Model.ServiceOrder;
+import View.CrudException;
 
-public class ServiceOrderController {
+public class ServiceOrderController implements Serializable {
 
     /********************
      * Class Properties *
      ********************/
 
-    public static ArrayList<ServiceOrder> services = new ArrayList<ServiceOrder>();
+    public static Map<Integer, ServiceOrder> services;
 
     /**********************
      * Class Constructors *
      **********************/
 
-    public static boolean create(final int mileage, final IVehicle vehicle, final IEmployee employee,
-            final String description) {
+    public ServiceOrderController() {
+        services = new TreeMap<>();
+    }
+
+    /***********************
+     * Getters and Setters *
+     ***********************/
+
+    public DefaultComboBoxModel<ServiceOrder> getDefaultComboBoxModel() {
+        DefaultComboBoxModel<ServiceOrder> model = new DefaultComboBoxModel<>();
+
+        for (ServiceOrder service : services.values()) {
+            model.addElement(service);
+        }
+
+        return model;
+    }
+
+    public DefaultTableModel getTableModel() {
+        Object[] header = { "Number", "Date", "Client", "Vehicle", "Mileage", "Consultant" };
+
+        DefaultTableModel model = new DefaultTableModel(header, 0);
+
+        for (var entry : services.entrySet()) {
+            Object[] row = { entry.getKey(), entry.getValue().getDate(), entry.getValue().getClient().getName(),
+                    entry.getValue().getVehicle().getPlate(), entry.getValue().getMileage(),
+                    entry.getValue().getConsultant().getName() };
+
+            model.addRow(row);
+        }
+
+        return model;
+    }
+
+    /*****************************
+     * Additional Public Methods *
+     *****************************/
+
+    public void create(final int mileage, final IVehicle vehicle, final IEmployee employee, final String description)
+            throws CrudException {
         ServiceOrder newServiceOrder = new ServiceOrder(vehicle, mileage);
 
         if (employee != null) {
@@ -31,54 +73,46 @@ public class ServiceOrderController {
             newServiceOrder.setDescription(description);
         }
 
-        return services.add(newServiceOrder);
+        if (services.put(newServiceOrder.getNumber(), newServiceOrder) != null) {
+            throw new CrudException("Employee cannot be created.");
+        }
+
+        Controller.writeFile();
     }
 
-    public static Object[] read(final int index) {
-        ServiceOrder item = services.get(index);
+    public Object[] read(final Object id) {
+        ServiceOrder service = services.get((Integer) id);
 
-        Object[] row = { item.getNumber(), item.getDate(), item.getClient(), item.getVehicle(), item.getMileage(),
-                item.getConsultant() };
+        Object[] row = { service.getNumber(), service.getDate(), service.getClient(), service.getVehicle(),
+                service.getMileage(), service.getConsultant() };
 
         return row;
     }
 
-    public static boolean update(final int index, final int mileage, final IEmployee employee,
-            final String description) {
-        ServiceOrder item = (ServiceOrder) services.get(index);
+    public void update(final Object id, final int mileage, final IEmployee employee, final String description)
+            throws CrudException {
+        ServiceOrder service = services.get((Integer) id);
 
-        if (item == null) {
-            return false;
+        if (service == null) {
+            throw new CrudException("Service Order do not exists.");
         }
 
-        item.setMileage(mileage);
-        item.setConsultant(employee);
-        item.setDescription(description);
+        service.setMileage(mileage);
+        service.setConsultant(employee);
+        service.setDescription(description);
 
-        return true;
+        Controller.writeFile();
     }
 
-    public static boolean delete(final int index) {
-        ServiceOrder item = services.get(index);
+    public void delete(final Object id) throws CrudException {
+        ServiceOrder service = services.get(id);
 
-        if (item == null) {
-            return false;
+        if (service == null) {
+            throw new CrudException("Service Order do not exists.");
         }
 
-        return services.remove(item);
-    }
+        services.remove((Integer) id);
 
-    public static DefaultTableModel getTableModel() {
-        Object[] header = { "Number", "Date", "Client", "Vehicle", "Mileage", "Consultant" };
-
-        DefaultTableModel model = new DefaultTableModel(header, 0);
-
-        for (int i = 0; i < services.size(); i++) {
-            ServiceOrder curr = services.get(i);
-            model.addRow(new Object[] { curr.getNumber(), curr.getDate(), curr.getClient(), curr.getVehicle(),
-                    curr.getMileage(), curr.getConsultant() });
-        }
-
-        return model;
+        Controller.writeFile();
     }
 }

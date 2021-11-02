@@ -8,6 +8,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import Controller.Controller;
 import Controller.ItemController;
 import Model.EItemType;
 
@@ -36,7 +37,7 @@ public class ItemView extends CrudPanel {
         description = descriptionArea.getText();
         price = priceField.getText();
 
-        if (description.length() <= 0 || isNumeric(price) || itemType == null) {
+        if (description.length() <= 0 || !isNumeric(price) || itemType == null) {
             return false;
         }
 
@@ -57,7 +58,9 @@ public class ItemView extends CrudPanel {
 
     @Override
     protected DefaultTableModel getTableModel() {
-        return ItemController.getTableModel();
+        ItemController itemController = Controller.getItemController();
+
+        return itemController.getTableModel();
     }
 
     @Override
@@ -93,8 +96,10 @@ public class ItemView extends CrudPanel {
     }
 
     @Override
-    protected void selectedRowAction(final int row) {
-        Object[] newRow = ItemController.read(row);
+    protected void selectedRowAction(final Object id) {
+        ItemController itemController = Controller.getItemController();
+
+        Object[] newRow = itemController.read(id);
 
         priceField.setText(newRow[0].toString());
         itemTypeBox.setSelectedItem(newRow[1]);
@@ -107,27 +112,26 @@ public class ItemView extends CrudPanel {
             throw new InvalidFormException("Invalid Parameters.");
         }
 
-        if (!ItemController.create(itemType, description, Double.parseDouble(price))) {
-            throw new CrudException("Can't create new Item. Something went wrong.");
-        }
+        ItemController itemController = Controller.getItemController();
+
+        itemController.create(itemType, description, Double.parseDouble(price));
     }
 
     @Override
-    protected void updateAction(final int row) throws InvalidFormException, CrudException {
+    protected void updateAction(final Object id) throws InvalidFormException, CrudException {
         if (!getForm()) {
             throw new InvalidFormException("Invalid Parameters.");
         }
 
-        if (!ItemController.update(row, Double.parseDouble(price))) {
-            throw new CrudException("Can't update new Item. Something went wrong.");
-        }
+        ItemController itemController = Controller.getItemController();
+
+        itemController.update(id, Double.parseDouble(price));
     }
 
     @Override
-    protected void deleteAction(final int row) throws CrudException {
-        if (!ItemController.delete(row)) {
-            throw new CrudException("Can't delete new Item. Something went wrong.");
-        }
+    protected void deleteAction(final Object id) throws CrudException {
+        ItemController itemController = Controller.getItemController();
+        itemController.delete(id);
     }
 
     @Override

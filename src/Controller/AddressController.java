@@ -23,10 +23,14 @@ public class AddressController implements Serializable {
 
         addresses.add(newAddress);
 
+        Controller.writeFile();
+
         return newAddress;
     }
 
     public void delete(final Address address) {
         addresses.remove(address);
+
+        Controller.writeFile();
     }
 }
