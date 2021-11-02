@@ -1,6 +1,8 @@
 package Controller;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.Map;
+import java.util.TreeMap;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -8,33 +10,92 @@ import Model.Address;
 import Model.City;
 import Model.Client;
 import Model.IClient;
+import View.CrudException;
 
-public class ClientController {
+public class ClientController implements Serializable {
 
     /********************
      * Class Properties *
      ********************/
 
-    public static ArrayList<IClient> clients = new ArrayList<IClient>();
+    public Map<String, IClient> clients;
 
     /**********************
      * Class Constructors *
      **********************/
 
-    public static boolean create(final String cpf, final String name, final String telephone, final String email,
-            final boolean platinum, final String street, final String number, final String neighborhood,
-            final City city) {
-        Address clientAddress = AddressController.create(street, number, neighborhood, city);
-
-        Client newClient = new Client(cpf, name, telephone, clientAddress);
-        newClient.setEmail(email);
-        newClient.setPlatinum(platinum);
-
-        return clients.add(newClient);
+    public ClientController() {
+        clients = new TreeMap<>();
     }
 
-    public static Object[] read(final int index) {
-        IClient client = clients.get(index);
+    /***********************
+     * Getters and Setters *
+     ***********************/
+
+    public Map<String, IClient> getAll() {
+        return clients;
+    }
+
+    public DefaultTableModel getTableModel() {
+        Object[] header = { "CPF", "Name", "Telephone", "Email", "Platinum", "Street", "Number", "Neighborhood",
+                "City" };
+
+        DefaultTableModel model = new DefaultTableModel(header, 0);
+
+        for (var entry : clients.entrySet()) {
+            Object[] row = { entry.getValue().getCpf(), entry.getValue().getName(), entry.getValue().getTelephone(),
+                    entry.getValue().getEmail(), entry.getValue().isPlatinum(),
+                    entry.getValue().getAddress().getStreet(), entry.getValue().getAddress().getNumber(),
+                    entry.getValue().getAddress().getNeighborhood(),
+                    entry.getValue().getAddress().getCity().getName() };
+
+            model.addRow(row);
+        }
+
+        return model;
+    }
+
+    /******************************
+     * Additional Private Methods *
+     ******************************/
+
+    private void persist() {
+        Controller.writeFile();
+    }
+
+    /*****************************
+     * Additional Public Methods *
+     *****************************/
+
+    public void create(final Object cpf, final String name, final String telephone, final String email,
+            final boolean platinum, final String street, final String number, final String neighborhood,
+            final City city) throws CrudException {
+        if (clients.get((String) cpf) != null) {
+            throw new CrudException("Client already exists.");
+        }
+
+        AddressController addressController = Controller.getAddressController();
+
+        Address clientAddress = addressController.create(street, number, neighborhood, city);
+        Client newClient = new Client((String) cpf, name, telephone, clientAddress);
+
+        if (email != null) {
+            newClient.setEmail(email);
+        }
+
+        if (platinum) {
+            newClient.setPlatinum(true);
+        }
+
+        if (clients.put((String) cpf, newClient) != null) {
+            throw new CrudException("Client cannot be created.");
+        }
+
+        persist();
+    }
+
+    public Object[] read(final Object id) {
+        IClient client = clients.get((String) id);
 
         Object[] row = { client.getCpf(), client.getName(), client.getTelephone(),
                 client.getEmail() != null ? client.getEmail() : "", client.isPlatinum(),
@@ -44,17 +105,13 @@ public class ClientController {
         return row;
     }
 
-    public static ArrayList<IClient> getAll() {
-        return clients;
-    }
-
-    public static boolean update(final int index, final String name, final String telephone, final String email,
+    public void update(final Object id, final String name, final String telephone, final String email,
             final boolean platinum, final String street, final String number, final String neighborhood,
-            final City city) {
-        Client client = (Client) clients.get(index);
+            final City city) throws CrudException {
+        Client client = (Client) clients.get(id);
 
         if (client == null) {
-            return false;
+            throw new CrudException("Client do not exists.");
         }
 
         client.setName(name);
@@ -66,36 +123,21 @@ public class ClientController {
         client.getAddress().setNeighborhood(neighborhood);
         client.getAddress().setCity(city);
 
-        return true;
+        persist();
     }
 
-    public static boolean delete(final int index) {
-        IClient client = clients.get(index);
+    public void delete(final Object id) throws CrudException {
+        Client client = (Client) clients.get((String) id);
 
         if (client == null) {
-            return false;
+            throw new CrudException("Client do not exists.");
         }
 
-        AddressController.delete(client.getAddress());
-        clients.remove(client);
+        AddressController addressController = Controller.getAddressController();
+        addressController.delete(client.getAddress());
 
-        return true;
-    }
+        clients.remove((String) id);
 
-    public static DefaultTableModel getTableModel() {
-        Object[] header = { "CPF", "Name", "Telephone", "Email", "Platinum", "Street", "Number", "Neighborhood",
-                "City" };
-
-        DefaultTableModel model = new DefaultTableModel(header, 0);
-
-        for (int i = 0; i < clients.size(); i++) {
-            IClient curr = clients.get(i);
-            model.addRow(new Object[] { curr.getCpf(), curr.getName(), curr.getTelephone(),
-                    curr.getEmail() != null ? curr.getEmail() : "", curr.isPlatinum() == true ? "Yes" : "No",
-                    curr.getAddress().getStreet(), curr.getAddress().getNumber(), curr.getAddress().getNeighborhood(),
-                    curr.getAddress().getCity() });
-        }
-
-        return model;
+        persist();
     }
 }

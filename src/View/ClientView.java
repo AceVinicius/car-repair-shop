@@ -15,6 +15,7 @@ import javax.swing.text.MaskFormatter;
 
 import Controller.CityController;
 import Controller.ClientController;
+import Controller.Controller;
 import Model.City;
 
 public class ClientView extends CrudPanel {
@@ -33,7 +34,7 @@ public class ClientView extends CrudPanel {
     private JTextField streetField;
     private JFormattedTextField numberField;
     private JTextField neighborhoodField;
-    private JComboBox<?> cityBox;
+    private JComboBox<City> cityBox;
 
     private String cpf;
     private String name;
@@ -74,7 +75,9 @@ public class ClientView extends CrudPanel {
 
     @Override
     protected DefaultTableModel getTableModel() {
-        return ClientController.getTableModel();
+        ClientController clientController = Controller.getClientController();
+
+        return clientController.getTableModel();
     }
 
     @Override
@@ -168,7 +171,9 @@ public class ClientView extends CrudPanel {
         CityLabel.setBounds(208, 59, 28, 14);
         addressPanel.add(CityLabel);
 
-        cityBox = new JComboBox<>(CityController.getAll().toArray());
+        CityController cityController = Controller.getCityController();
+
+        cityBox = new JComboBox<City>(cityController.getDefaultComboBoxModel());
         cityBox.setEnabled(false);
         cityBox.setBounds(246, 54, 188, 22);
         addressPanel.add(cityBox);
@@ -188,8 +193,10 @@ public class ClientView extends CrudPanel {
     }
 
     @Override
-    protected void selectedRowAction(final int row) {
-        Object[] newRow = ClientController.read(row);
+    protected void selectedRowAction(final Object id) {
+        ClientController clientController = Controller.getClientController();
+
+        Object[] newRow = clientController.read(id);
 
         cpfField.setText(newRow[0].toString());
         nameField.setText(newRow[1].toString());
@@ -208,27 +215,27 @@ public class ClientView extends CrudPanel {
             throw new InvalidFormException("Invalid Parameters.");
         }
 
-        if (!ClientController.create(cpf, name, telephone, email, isPlatinum, street, number, neighborhood, city)) {
-            throw new CrudException("Can't create new Client. Something went wrong.");
-        }
+        ClientController clientController = Controller.getClientController();
+
+        clientController.create(cpf, name, telephone, email, isPlatinum, street, number, neighborhood, city);
     }
 
     @Override
-    protected void updateAction(final int row) throws InvalidFormException, CrudException {
+    protected void updateAction(final Object id) throws InvalidFormException, CrudException {
         if (!getForm()) {
             throw new InvalidFormException("Invalid Parameters.");
         }
 
-        if (!ClientController.update(row, name, telephone, email, isPlatinum, street, number, neighborhood, city)) {
-            throw new CrudException("Can't update new Client. Something went wrong.");
-        }
+        ClientController clientController = Controller.getClientController();
+
+        clientController.update(id, name, telephone, email, isPlatinum, street, number, neighborhood, city);
     }
 
     @Override
-    protected void deleteAction(final int row) throws CrudException {
-        if (!ClientController.delete(row)) {
-            throw new CrudException("Can't delete new Client. Something went wrong.");
-        }
+    protected void deleteAction(final Object id) throws CrudException {
+        ClientController clientController = Controller.getClientController();
+
+        clientController.delete(id);
     }
 
     @Override

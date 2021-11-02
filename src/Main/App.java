@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import Controller.Controller;
 import View.View;
 
 public class App {
@@ -28,8 +29,11 @@ public class App {
 
         EventQueue.invokeLater(new Runnable() {
             public void run() {
+            	
+            	Controller.readFile();
+            	
                 try {
-                    new View();
+                	new View();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

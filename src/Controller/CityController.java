@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 import Model.City;
@@ -35,8 +36,14 @@ public class CityController implements Serializable {
         return cities.get((String) id);
     }
 
-    public Map<String, City> getAll() {
-        return cities;
+    public DefaultComboBoxModel<City> getDefaultComboBoxModel() {
+        DefaultComboBoxModel<City> model = new DefaultComboBoxModel<>();
+
+        for (City city : cities.values()) {
+            model.addElement(city);
+        }
+
+        return model;
     }
 
     public DefaultTableModel getTableModel() {

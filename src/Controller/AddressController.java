@@ -17,7 +17,7 @@ public class AddressController {
      * Class Constructors *
      **********************/
 
-    public static Address create(final String street, final String number, final String neighborhood, final City city) {
+    public Address create(final String street, final String number, final String neighborhood, final City city) {
         Address newAddress = new Address(street, number, neighborhood, city);
 
         addresses.add(newAddress);
@@ -25,7 +25,7 @@ public class AddressController {
         return newAddress;
     }
 
-    public static void delete(final Address address) {
+    public void delete(final Address address) {
         addresses.remove(address);
     }
 }
