@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.Address;
 import Model.City;
 import Model.Client;
+import Model.EmailException;
 import Model.IClient;
 import View.CrudException;
 
@@ -68,7 +69,7 @@ public class ClientController implements Serializable {
 
     public void create(final String cpf, final String name, final String telephone, final String email,
             final boolean platinum, final String street, final String number, final String neighborhood,
-            final City city) throws CrudException {
+            final City city) throws CrudException, EmailException {
         if (clients.get(cpf) != null) {
             throw new CrudException("Client already exists.");
         }
@@ -106,16 +107,16 @@ public class ClientController implements Serializable {
 
     public void update(final Object id, final String name, final String telephone, final String email,
             final boolean platinum, final String street, final String number, final String neighborhood,
-            final City city) throws CrudException {
+            final City city) throws CrudException, EmailException {
         Client client = (Client) clients.get((String) id);
 
         if (client == null) {
             throw new CrudException("Client do not exists.");
         }
 
+        client.setEmail(email);
         client.setName(name);
         client.setTelephone(telephone);
-        client.setEmail(email);
         client.setPlatinum(platinum);
         client.getAddress().setStreet(street);
         client.getAddress().setNumber(number);

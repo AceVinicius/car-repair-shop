@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Model.Address;
 import Model.City;
+import Model.EmailException;
 import Model.Employee;
 import Model.IEmployee;
 import View.CrudException;
@@ -61,11 +62,14 @@ public class EmployeeController implements Serializable {
     }
 
     /*****************************
-     * Additional Public Methods *
+     * Additional Public Methods
+     * 
+     * @throws EmailException*
      *****************************/
 
     public void create(final String cpf, final String name, final String telephone, final String email,
-            final String street, final String number, final String neighborhood, final City city) throws CrudException {
+            final String street, final String number, final String neighborhood, final City city)
+            throws CrudException, EmailException {
         if (employees.get(cpf) != null) {
             throw new CrudException("Employee already exists.");
         }
@@ -98,16 +102,17 @@ public class EmployeeController implements Serializable {
     }
 
     public void update(final Object id, final String name, final String telephone, final String email,
-            final String street, final String number, final String neighborhood, final City city) throws CrudException {
+            final String street, final String number, final String neighborhood, final City city)
+            throws CrudException, EmailException {
         Employee employee = (Employee) employees.get((String) id);
 
         if (employee == null) {
             throw new CrudException("Employee do not exists.");
         }
 
+        employee.setEmail(email);
         employee.setName(name);
         employee.setTelephone(telephone);
-        employee.setEmail(email);
         employee.getAddress().setStreet(street);
         employee.getAddress().setNumber(number);
         employee.getAddress().setNeighborhood(neighborhood);

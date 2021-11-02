@@ -13,6 +13,8 @@ import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Model.EmailException;
+
 public abstract class CrudPanel extends JPanel {
     /********************
      * Class Properties *
@@ -97,15 +99,15 @@ public abstract class CrudPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     deleteAction(id);
+                    table.setModel(getTableModel());
+                    cleanForm();
+                    mode = K_DEFAULT;
+                    formMode(mode);
                     JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (CrudException ex) {
                     JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                table.setModel(getTableModel());
-                cleanForm();
-                mode = K_DEFAULT;
-                formMode(mode);
             }
         });
 
@@ -138,6 +140,10 @@ public abstract class CrudPanel extends JPanel {
                     } catch (CrudException ex) {
                         JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         return;
+                    } catch (EmailException ex) {
+                        JOptionPane.showMessageDialog(panel, ex.getMessage(), "Information",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        return;
                     }
 
                     break;
@@ -152,6 +158,10 @@ public abstract class CrudPanel extends JPanel {
                         return;
                     } catch (CrudException ex) {
                         JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    } catch (EmailException ex) {
+                        JOptionPane.showMessageDialog(panel, ex.getMessage(), "Information",
+                                JOptionPane.INFORMATION_MESSAGE);
                         return;
                     }
 
@@ -263,9 +273,9 @@ public abstract class CrudPanel extends JPanel {
 
     protected abstract void selectedRowAction(final Object id);
 
-    protected abstract void createAction() throws InvalidFormException, CrudException;
+    protected abstract void createAction() throws InvalidFormException, CrudException, EmailException;
 
-    protected abstract void updateAction(final Object id) throws InvalidFormException, CrudException;
+    protected abstract void updateAction(final Object id) throws InvalidFormException, CrudException, EmailException;
 
     protected abstract void deleteAction(final Object id) throws CrudException;
 

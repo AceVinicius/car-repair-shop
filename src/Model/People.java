@@ -60,13 +60,10 @@ public class People implements IPeople, Serializable {
         return email;
     }
 
-    public void setEmail(final String email) {
-        try {
-            validateEmail(email);
-            this.email = email;
-        } catch (EmailException e) {
-            System.out.println(e);
-        }
+    public void setEmail(final String email) throws EmailException {
+        validateEmail(email);
+
+        this.email = email;
     }
 
     @Override
@@ -94,7 +91,7 @@ public class People implements IPeople, Serializable {
         Matcher result = pattern.matcher(email);
 
         if (!result.matches()) {
-            throw new EmailException("Não sabe o que é email não, trouxa?\n");
+            throw new EmailException("Email was not set.");
         }
     }
 }

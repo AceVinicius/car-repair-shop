@@ -1,9 +1,10 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Category {
+public class Category implements Serializable {
 
     /********************
      * Class Properties *
@@ -26,7 +27,7 @@ public class Category {
      * Getters and Setters *
      ***********************/
 
-    public String getNome() {
+    public String getName() {
         return name;
     }
 

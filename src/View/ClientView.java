@@ -17,6 +17,7 @@ import Controller.CityController;
 import Controller.ClientController;
 import Controller.Controller;
 import Model.City;
+import Model.EmailException;
 
 public class ClientView extends CrudPanel {
 
@@ -32,7 +33,7 @@ public class ClientView extends CrudPanel {
     private JTextField emailField;
     private JToggleButton btnIsPlatinum;
     private JTextField streetField;
-    private JFormattedTextField numberField;
+    private JTextField numberField;
     private JTextField neighborhoodField;
     private JComboBox<City> cityBox;
 
@@ -157,11 +158,7 @@ public class ClientView extends CrudPanel {
         numberLabel.setBounds(10, 59, 43, 14);
         addressPanel.add(numberLabel);
 
-        try {
-            numberField = new JFormattedTextField(new MaskFormatter("######"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        numberField = new JTextField();
         numberField.setBounds(56, 56, 142, 20);
         numberField.setEnabled(false);
         numberField.setColumns(10);
@@ -210,7 +207,7 @@ public class ClientView extends CrudPanel {
     }
 
     @Override
-    protected void createAction() throws InvalidFormException, CrudException {
+    protected void createAction() throws InvalidFormException, CrudException, EmailException {
         if (!getForm()) {
             throw new InvalidFormException("Invalid Parameters.");
         }
@@ -221,7 +218,7 @@ public class ClientView extends CrudPanel {
     }
 
     @Override
-    protected void updateAction(final Object id) throws InvalidFormException, CrudException {
+    protected void updateAction(final Object id) throws InvalidFormException, CrudException, EmailException {
         if (!getForm()) {
             throw new InvalidFormException("Invalid Parameters.");
         }

@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
@@ -16,6 +17,7 @@ import Controller.CityController;
 import Controller.Controller;
 import Controller.EmployeeController;
 import Model.City;
+import Model.EmailException;
 
 public class EmployeeView extends CrudPanel {
 
@@ -30,7 +32,7 @@ public class EmployeeView extends CrudPanel {
     private JFormattedTextField telephoneField;
     private JTextField emailField;
     private JTextField streetField;
-    private JFormattedTextField numberField;
+    private JTextField numberField;
     private JTextField neighborhoodField;
     private JComboBox<City> cityBox;
 
@@ -148,11 +150,7 @@ public class EmployeeView extends CrudPanel {
         numberLabel.setBounds(10, 59, 43, 14);
         address.add(numberLabel);
 
-        try {
-            numberField = new JFormattedTextField(new MaskFormatter("######"));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        numberField = new JTextField();
         numberField.setBounds(56, 56, 142, 20);
         numberField.setEnabled(false);
         numberField.setColumns(10);
@@ -207,7 +205,11 @@ public class EmployeeView extends CrudPanel {
 
         EmployeeController employeeController = Controller.getEmployeeController();
 
-        employeeController.create(cpf, name, telephone, email, street, number, neighborhood, city);
+        try {
+            employeeController.create(cpf, name, telephone, email, street, number, neighborhood, city);
+        } catch (EmailException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override
@@ -218,7 +220,11 @@ public class EmployeeView extends CrudPanel {
 
         EmployeeController employeeController = Controller.getEmployeeController();
 
-        employeeController.update(id, name, telephone, email, street, number, neighborhood, city);
+        try {
+            employeeController.update(id, name, telephone, email, street, number, neighborhood, city);
+        } catch (EmailException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Information", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     @Override

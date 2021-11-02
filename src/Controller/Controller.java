@@ -15,6 +15,7 @@ public class Controller implements Serializable {
     private static Controller instance;
 
     private AddressController addressController;
+    private CategoryController categoryController;
     private CityController cityController;
     private ClientController clientController;
     private EmployeeController employeeController;
@@ -29,6 +30,7 @@ public class Controller implements Serializable {
 
     private Controller() {
         addressController = new AddressController();
+        categoryController = new CategoryController();
         cityController = new CityController();
         clientController = new ClientController();
         employeeController = new EmployeeController();
@@ -48,6 +50,10 @@ public class Controller implements Serializable {
 
     public static AddressController getAddressController() {
         return instance.addressController;
+    }
+
+    public static CategoryController getCategoryController() {
+        return instance.categoryController;
     }
 
     public static CityController getCityController() {

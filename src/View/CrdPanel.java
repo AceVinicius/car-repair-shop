@@ -87,15 +87,15 @@ public abstract class CrdPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     deleteAction(id);
+                    table.setModel(getTableModel());
+                    cleanForm();
+                    mode = K_DEFAULT;
+                    formMode(mode);
                     JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (CrudException ex) {
                     JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                table.setModel(getTableModel());
-                cleanForm();
-                mode = K_DEFAULT;
-                formMode(mode);
             }
         });
 
@@ -127,19 +127,17 @@ public abstract class CrdPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 try {
                     createAction();
+                    table.setModel(getTableModel());
+                    cleanForm();
+                    mode = K_DEFAULT;
+                    formMode(mode);
                     JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (InvalidFormException ex) {
                     JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
-                    return;
                 } catch (CrudException ex) {
                     JOptionPane.showMessageDialog(panel, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
                 }
-                table.setModel(getTableModel());
-                cleanForm();
-                mode = K_DEFAULT;
-                formMode(mode);
             }
         });
         btnSave.setEnabled(false);
