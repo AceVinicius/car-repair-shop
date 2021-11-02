@@ -1,13 +1,16 @@
 package Controller;
 
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
 import Model.Address;
 import Model.City;
 import Model.Employee;
 import Model.IEmployee;
+import View.CrudException;
 
 public class EmployeeController {
 
@@ -15,24 +18,83 @@ public class EmployeeController {
      * Class Properties *
      ********************/
 
-    public static ArrayList<IEmployee> employees = new ArrayList<IEmployee>();
+    public Map<String, IEmployee> employees;
 
     /**********************
      * Class Constructors *
      **********************/
 
-    public static boolean create(final String cpf, final String name, final String telephone, final String email,
-            final String street, final String number, final String neighborhood, final City city) {
-        Address employeeAddress = AddressController.create(street, number, neighborhood, city);
-
-        Employee newEmployee = new Employee(cpf, name, telephone, employeeAddress);
-        newEmployee.setEmail(email);
-
-        return employees.add(newEmployee);
+    public EmployeeController() {
+        employees = new TreeMap<>();
     }
 
-    public static Object[] read(final int index) {
-        IEmployee employee = employees.get(index);
+    /***********************
+     * Getters and Setters *
+     ***********************/
+
+    public DefaultComboBoxModel<IEmployee> getDefaultComboBoxModel() {
+        DefaultComboBoxModel<IEmployee> model = new DefaultComboBoxModel<>();
+
+        for (IEmployee employee : employees.values()) {
+            model.addElement(employee);
+        }
+
+        return model;
+    }
+
+    public DefaultTableModel getTableModel() {
+        Object[] header = { "CPF", "Name", "Telephone", "Email", "Street", "Number", "Neighborhood", "City" };
+
+        DefaultTableModel model = new DefaultTableModel(header, 0);
+
+        for (var entry : employees.entrySet()) {
+            Object[] row = { entry.getValue().getCpf(), entry.getValue().getName(), entry.getValue().getTelephone(),
+                    entry.getValue().getEmail(), entry.getValue().getAddress().getStreet(),
+                    entry.getValue().getAddress().getNumber(), entry.getValue().getAddress().getNeighborhood(),
+                    entry.getValue().getAddress().getCity() };
+
+            model.addRow(row);
+        }
+
+        return model;
+    }
+
+    /******************************
+     * Additional Private Methods *
+     ******************************/
+
+    private void persist() {
+        Controller.writeFile();
+    }
+
+    /*****************************
+     * Additional Public Methods *
+     *****************************/
+
+    public void create(final String cpf, final String name, final String telephone, final String email,
+            final String street, final String number, final String neighborhood, final City city) throws CrudException {
+        if (employees.get(cpf) != null) {
+            throw new CrudException("Employee already exists.");
+        }
+
+        AddressController addressController = Controller.getAddressController();
+
+        Address employeeAddress = addressController.create(street, number, neighborhood, city);
+        Employee newEmployee = new Employee(cpf, name, telephone, employeeAddress);
+
+        if (email != null) {
+            newEmployee.setEmail(email);
+        }
+
+        if (employees.put(cpf, newEmployee) != null) {
+            throw new CrudException("Employee cannot be created.");
+        }
+
+        persist();
+    }
+
+    public Object[] read(final Object id) {
+        IEmployee employee = employees.get((String) id);
 
         Object[] row = { employee.getCpf(), employee.getName(), employee.getTelephone(),
                 employee.getEmail() != null ? employee.getEmail() : "", employee.getAddress().getStreet(),
@@ -42,16 +104,12 @@ public class EmployeeController {
         return row;
     }
 
-    public static ArrayList<IEmployee> getAll() {
-        return employees;
-    }
-
-    public static boolean update(final int index, final String name, final String telephone, final String email,
-            final String street, final String number, final String neighborhood, final City city) {
-        Employee employee = (Employee) employees.get(index);
+    public void update(final Object id, final String name, final String telephone, final String email,
+            final String street, final String number, final String neighborhood, final City city) throws CrudException {
+        Employee employee = (Employee) employees.get((String) id);
 
         if (employee == null) {
-            return false;
+            throw new CrudException("Employee do not exists.");
         }
 
         employee.setName(name);
@@ -62,34 +120,21 @@ public class EmployeeController {
         employee.getAddress().setNeighborhood(neighborhood);
         employee.getAddress().setCity(city);
 
-        return true;
+        persist();
     }
 
-    public static boolean delete(final int index) {
-        IEmployee employee = employees.get(index);
+    public void delete(final Object id) throws CrudException {
+        IEmployee employee = (IEmployee) employees.get((String) id);
 
         if (employee == null) {
-            return false;
+            throw new CrudException("Employee do not exists.");
         }
 
-        AddressController.delete(employee.getAddress());
-        employees.remove(employee);
+        AddressController addressController = Controller.getAddressController();
 
-        return true;
-    }
+        addressController.delete(employee.getAddress());
+        employees.remove((String) id);
 
-    public static DefaultTableModel getTableModel() {
-        Object[] header = { "CPF", "Name", "Telephone", "Email", "Street", "Number", "Neighborhood", "City" };
-
-        DefaultTableModel model = new DefaultTableModel(header, 0);
-
-        for (int i = 0; i < employees.size(); i++) {
-            IEmployee curr = employees.get(i);
-            model.addRow(new Object[] { curr.getCpf(), curr.getName(), curr.getTelephone(),
-                    curr.getEmail() != null ? curr.getEmail() : "", curr.getAddress().getStreet(),
-                    curr.getAddress().getNumber(), curr.getAddress().getNeighborhood(), curr.getAddress().getCity() });
-        }
-
-        return model;
+        persist();
     }
 }

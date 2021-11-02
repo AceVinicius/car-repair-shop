@@ -67,17 +67,17 @@ public class ClientController implements Serializable {
      * Additional Public Methods *
      *****************************/
 
-    public void create(final Object cpf, final String name, final String telephone, final String email,
+    public void create(final String cpf, final String name, final String telephone, final String email,
             final boolean platinum, final String street, final String number, final String neighborhood,
             final City city) throws CrudException {
-        if (clients.get((String) cpf) != null) {
+        if (clients.get(cpf) != null) {
             throw new CrudException("Client already exists.");
         }
 
         AddressController addressController = Controller.getAddressController();
 
         Address clientAddress = addressController.create(street, number, neighborhood, city);
-        Client newClient = new Client((String) cpf, name, telephone, clientAddress);
+        Client newClient = new Client(cpf, name, telephone, clientAddress);
 
         if (email != null) {
             newClient.setEmail(email);
@@ -87,7 +87,7 @@ public class ClientController implements Serializable {
             newClient.setPlatinum(true);
         }
 
-        if (clients.put((String) cpf, newClient) != null) {
+        if (clients.put(cpf, newClient) != null) {
             throw new CrudException("Client cannot be created.");
         }
 
@@ -108,7 +108,7 @@ public class ClientController implements Serializable {
     public void update(final Object id, final String name, final String telephone, final String email,
             final boolean platinum, final String street, final String number, final String neighborhood,
             final City city) throws CrudException {
-        Client client = (Client) clients.get(id);
+        Client client = (Client) clients.get((String) id);
 
         if (client == null) {
             throw new CrudException("Client do not exists.");
@@ -127,15 +127,15 @@ public class ClientController implements Serializable {
     }
 
     public void delete(final Object id) throws CrudException {
-        Client client = (Client) clients.get((String) id);
+        IClient client = (IClient) clients.get((String) id);
 
         if (client == null) {
             throw new CrudException("Client do not exists.");
         }
 
         AddressController addressController = Controller.getAddressController();
-        addressController.delete(client.getAddress());
 
+        addressController.delete(client.getAddress());
         clients.remove((String) id);
 
         persist();
