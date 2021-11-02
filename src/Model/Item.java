@@ -4,9 +4,11 @@ import java.io.Serializable;
 
 public class Item implements IItem, Serializable {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = 5828051106928009146L;
 
     private static int barCodeCounter = 1;
 

@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -13,11 +12,13 @@ import Model.Model;
 import Model.Vehicle;
 import View.CrudException;
 
-public class VehicleController implements Serializable {
+public class VehicleController extends CrudController {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = -7966540195074986817L;
 
     public static Map<String, IVehicle> vehicles;
 
@@ -43,7 +44,7 @@ public class VehicleController implements Serializable {
         return model;
     }
 
-    public static DefaultTableModel getTableModel() {
+    public DefaultTableModel getTableModel() {
         Object[] header = { "Chassis", "Year", "Color", "Plate", "Model", "Owner" };
 
         DefaultTableModel model = new DefaultTableModel(header, 0);

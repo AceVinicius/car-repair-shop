@@ -4,9 +4,11 @@ import java.io.Serializable;
 
 public class ItemSO implements Serializable {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+	
+	private static final long serialVersionUID = 2366703755225373537L;
 
     private final IItem item;
 

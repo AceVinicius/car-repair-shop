@@ -2,9 +2,11 @@ package Model;
 
 public class Client extends People implements IClient {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = 1527791888821076884L;
 
     private boolean platinum;
 

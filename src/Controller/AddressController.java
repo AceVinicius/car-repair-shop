@@ -8,9 +8,11 @@ import Model.City;
 
 public class AddressController implements Serializable {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = -2484377909104076975L;
 
     public static ArrayList<Address> addresses = new ArrayList<Address>();
 

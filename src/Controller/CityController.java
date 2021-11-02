@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -10,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import Model.City;
 import View.CrudException;
 
-public class CityController implements Serializable {
+public class CityController extends CrdController {
 
     /********************
      * Class Properties *

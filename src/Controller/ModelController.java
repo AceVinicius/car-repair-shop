@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -10,11 +9,13 @@ import javax.swing.table.DefaultTableModel;
 import Model.Model;
 import View.CrudException;
 
-public class ModelController implements Serializable {
+public class ModelController extends CrdController {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = 2659125354134717270L;
 
     static Map<String, Model> models;
 

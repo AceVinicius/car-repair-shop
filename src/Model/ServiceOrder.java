@@ -7,9 +7,11 @@ import java.util.Set;
 
 public class ServiceOrder implements Serializable {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = 4999068606190246290L;
 
     private static int numberCounter = 1;
     private final int number;

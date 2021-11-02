@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -14,11 +13,13 @@ import Model.EmailException;
 import Model.IClient;
 import View.CrudException;
 
-public class ClientController implements Serializable {
+public class ClientController extends CrudController {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = -1010931344606600976L;
 
     public Map<String, IClient> clients;
 

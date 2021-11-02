@@ -2,9 +2,11 @@ package Model;
 
 public class Employee extends People implements IEmployee {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = 1517494659136023252L;
 
     private static int registrationCounter = 1;
 

@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -12,11 +11,13 @@ import Model.IItem;
 import Model.Item;
 import View.CrudException;
 
-public class ItemController implements Serializable {
+public class ItemController extends CrudController {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = -8976604460914037848L;
 
     public Map<Long, IItem> items;
 

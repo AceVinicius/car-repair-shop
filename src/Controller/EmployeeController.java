@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -14,11 +13,13 @@ import Model.Employee;
 import Model.IEmployee;
 import View.CrudException;
 
-public class EmployeeController implements Serializable {
+public class EmployeeController extends CrudController {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = -8512790841551120356L;
 
     public Map<String, IEmployee> employees;
 
@@ -62,9 +63,7 @@ public class EmployeeController implements Serializable {
     }
 
     /*****************************
-     * Additional Public Methods
-     * 
-     * @throws EmailException*
+     * Additional Public Methods *
      *****************************/
 
     public void create(final String cpf, final String name, final String telephone, final String email,

@@ -73,7 +73,9 @@ public class VehicleView extends CrudPanel {
 
     @Override
     protected DefaultTableModel getTableModel() {
-        return VehicleController.getTableModel();
+        VehicleController vehicleController = Controller.getVehicleController();
+
+        return vehicleController.getTableModel();
     }
 
     @Override

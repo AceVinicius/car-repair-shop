@@ -6,9 +6,11 @@ import java.util.Set;
 
 public class Vehicle implements IVehicle, Serializable {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = -1500250232663681235L;
 
     private final Model model;
     private final String chassis;

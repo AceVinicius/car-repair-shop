@@ -42,7 +42,7 @@ public class CategoryView extends CrdPanel {
     protected DefaultTableModel getTableModel() {
         CategoryController categoryController = Controller.getCategoryController();
 
-        return categoryController.getTableCategory();
+        return categoryController.getTableModel();
     }
 
     @Override

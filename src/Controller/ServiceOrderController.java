@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -12,11 +11,13 @@ import Model.IVehicle;
 import Model.ServiceOrder;
 import View.CrudException;
 
-public class ServiceOrderController implements Serializable {
+public class ServiceOrderController extends CrudController {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = 4119135670839585777L;
 
     public static Map<Integer, ServiceOrder> services;
 

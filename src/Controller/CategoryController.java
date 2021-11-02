@@ -1,6 +1,5 @@
 package Controller;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -10,11 +9,13 @@ import javax.swing.table.DefaultTableModel;
 import Model.Category;
 import View.CrudException;
 
-public class CategoryController implements Serializable {
+public class CategoryController extends CrdController {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = -8964483718898893443L;
 
     static Map<String, Category> categories;
 
@@ -30,7 +31,7 @@ public class CategoryController implements Serializable {
      * Getters and Setters *
      ***********************/
 
-    public DefaultComboBoxModel<Category> getDefaultComboBoxCategory() {
+    public DefaultComboBoxModel<Category> getDefaultComboBoxModel() {
         DefaultComboBoxModel<Category> model = new DefaultComboBoxModel<>();
 
         for (Category category : categories.values()) {
@@ -40,7 +41,7 @@ public class CategoryController implements Serializable {
         return model;
     }
 
-    public DefaultTableModel getTableCategory() {
+    public DefaultTableModel getTableModel() {
         Object[] header = { "Name" };
 
         DefaultTableModel category = new DefaultTableModel(header, 0);

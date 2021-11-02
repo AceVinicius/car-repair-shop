@@ -6,9 +6,11 @@ import java.util.Set;
 
 public class Category implements Serializable {
 
-    /********************
+	/********************
      * Class Properties *
      ********************/
+	
+	private static final long serialVersionUID = -707482728977846790L;
 
     private final String name;
 

@@ -6,9 +6,12 @@ import java.util.regex.Pattern;
 
 public class People implements IPeople, Serializable {
 
-    /********************
+
+	/********************
      * Class Properties *
      ********************/
+
+	private static final long serialVersionUID = -5783651259768511339L;
 
     private final String cpf;
 
