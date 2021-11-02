@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 
 import Controller.CityController;
+import Controller.Controller;
 
 public class CityView extends CrdPanel {
 
@@ -22,6 +23,7 @@ public class CityView extends CrdPanel {
 
     private JTextField nameField;
     private JFormattedTextField stateField;
+
     private String name;
     private String state;
 
@@ -46,7 +48,9 @@ public class CityView extends CrdPanel {
 
     @Override
     protected DefaultTableModel getTableModel() {
-        return CityController.getTableModel();
+        CityController cityController = Controller.getCityController();
+
+        return cityController.getTableModel();
     }
 
     @Override
@@ -82,8 +86,10 @@ public class CityView extends CrdPanel {
     }
 
     @Override
-    protected void selectedRowAction(final int row) {
-        Object[] newRow = CityController.read(row);
+    protected void selectedRowAction(final Object id) {
+        CityController cityController = Controller.getCityController();
+
+        Object[] newRow = cityController.read(id);
 
         nameField.setText(newRow[0].toString());
         stateField.setText(newRow[1].toString());
@@ -95,16 +101,16 @@ public class CityView extends CrdPanel {
             throw new InvalidFormException("Invalid Parameters.");
         }
 
-        if (!CityController.create(name, state)) {
-            throw new CrudException("Can't create new City. Something went wrong.");
-        }
+        CityController cityController = Controller.getCityController();
+
+        cityController.create(name, state);
     }
 
     @Override
-    protected void deleteAction(final int row) throws CrudException {
-        if (!CityController.delete(row)) {
-            throw new CrudException("Can't delete selected City. Something went wrong.");
-        }
+    protected void deleteAction(final Object id) throws CrudException {
+        CityController cityController = Controller.getCityController();
+
+        cityController.delete(id);
     }
 
     @Override

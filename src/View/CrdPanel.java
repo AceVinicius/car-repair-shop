@@ -35,7 +35,7 @@ public abstract class CrdPanel extends JPanel {
     protected static final int K_SELECT = 3;
 
     private DefaultTableModel model;
-    private int selectedRow;
+    private Object id;
     private int mode;
 
     /**********************
@@ -48,7 +48,6 @@ public abstract class CrdPanel extends JPanel {
          */
         this.model = getTableModel();
         this.mode = K_DEFAULT;
-        this.selectedRow = -1;
 
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setBounds(10, 13, 464, 233);
@@ -57,9 +56,10 @@ public abstract class CrdPanel extends JPanel {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                selectedRow = table.getSelectedRow();
+                int selectedRow = table.getSelectedRow();
                 if (selectedRow >= 0 && selectedRow < table.getRowCount()) {
-                    selectedRowAction(selectedRow);
+                    id = table.getValueAt(selectedRow, 0);
+                    selectedRowAction(id);
                     mode = K_SELECT;
                     formMode(mode);
                 }
@@ -86,7 +86,7 @@ public abstract class CrdPanel extends JPanel {
         btnDelete.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    deleteAction(selectedRow);
+                    deleteAction(id);
                     JOptionPane.showMessageDialog(panel, "Record created successfully.", "Information",
                             JOptionPane.INFORMATION_MESSAGE);
                 } catch (CrudException ex) {
@@ -215,11 +215,11 @@ public abstract class CrdPanel extends JPanel {
 
     protected abstract void form(JPanel panel, JButton btnCancel, JButton btnSave);
 
-    protected abstract void selectedRowAction(final int row);
+    protected abstract void selectedRowAction(final Object id);
 
     protected abstract void createAction() throws InvalidFormException, CrudException;
 
-    protected abstract void deleteAction(final int row) throws CrudException;
+    protected abstract void deleteAction(final Object id) throws CrudException;
 
     protected abstract void enableForm(final boolean enabled);
 
