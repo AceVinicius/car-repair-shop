@@ -12,7 +12,7 @@ import Model.Employee;
 import Model.IEmployee;
 import View.CrudException;
 
-public class EmployeeController {
+public class EmployeeController implements Serializable {
 
     /********************
      * Class Properties *

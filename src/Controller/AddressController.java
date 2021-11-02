@@ -1,11 +1,12 @@
 package Controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import Model.Address;
 import Model.City;
 
-public class AddressController {
+public class AddressController implements Serializable {
 
     /********************
      * Class Properties *
